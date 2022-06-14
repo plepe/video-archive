@@ -7,5 +7,8 @@ $db_conf = [
   'database' => 'video_archive'
 ];
 
+// You should set a $data_dir to a directory which is not accessible by the web server. It has to be writeable by the web server though.
+$data_dir = "data/";
+
 // Additional submodules, which are not necessarily required
 # $modulekit_load[] = "modulekit-form-debug"; // uncomment this to enable debugging

@@ -3,6 +3,7 @@ $name = "Video Archive";
 $id = "video-archive";
 $depend = array(
   "modulekit-form",
+  "modulekit-history",
   "PDOext",
 ); // use modulekit-form and all its requirements
 $include = array(

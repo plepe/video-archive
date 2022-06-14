@@ -2,7 +2,7 @@
 class ActionNewVideo {
   function show () {
     global $data_dir;
-    $id = generateId();
+    $video = new Video();
 
     $form = new form('data', [
       'title'   => [
@@ -12,7 +12,7 @@ class ActionNewVideo {
       'file'    => [
         'type'    => 'file',
         'name'    => 'Video file',
-        'path'    => "{$data_dir}/{$id}",
+        'path'    => "{$data_dir}/{$video->id}",
         'template' => 'video.[ext]',
         'req'     => true,
       ],
@@ -23,8 +23,13 @@ class ActionNewVideo {
     ]);
 
     if ($form->is_complete()) {
-      mkdir("{$data_dir}/{$id}");
+      mkdir("{$data_dir}/{$video->id}");
       $data = $form->save_data();
+
+      $changeset = new Changeset('new video');
+      $changeset->open();
+      $video->save($data, $changeset);
+      $changeset->commit();
 
       return "Uploaded";
     }

@@ -1,7 +1,10 @@
 <?php
 $name = "Video Archive";
 $id = "video-archive";
-$depend = array("modulekit-form"); // use modulekit-form and all its requirements
+$depend = array(
+  "modulekit-form",
+  "PDOext",
+); // use modulekit-form and all its requirements
 $include = array(
   'php' => array(
     'inc/*.php' // automatically include all files in inc-directory

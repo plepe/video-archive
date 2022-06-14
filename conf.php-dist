@@ -1,3 +1,11 @@
 <?php
+// Database Configuration
+$db_conf = [
+  'type'     => 'mysql',
+  'username' => 'username',
+  'password' => 'password',
+  'database' => 'video_archive'
+];
+
 // Additional submodules, which are not necessarily required
 # $modulekit_load[] = "modulekit-form-debug"; // uncomment this to enable debugging

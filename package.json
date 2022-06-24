@@ -1,0 +1,22 @@
+{
+  "name": "video-archive",
+  "description": "```sh git clone https://github.com/plepe/video-archive cd video-archive cp conf.php-dist conf.php git submodule update --init ```",
+  "version": "0.0.0",
+  "main": "src/index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/plepe/video-archive.git"
+  },
+  "author": "Stephan Bösch-Plepelits <plepelits@cg.tuwien.ac.at>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/plepe/video-archive/issues"
+  },
+  "homepage": "https://github.com/plepe/video-archive#readme"
+}

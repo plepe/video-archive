@@ -41,6 +41,15 @@ class Video {
     }
   }
 
+  function show ($options = []) {
+    $result  = "<div id=\"{$this->id}\">\n";
+    $result .= "<div class=\"videoContainer\"></div>\n";
+    $result .= "<div class=\"title\">{$this->data['title']}</div>\n";
+    $result .= "</div>";
+
+    return $result;
+  }
+
   static function get ($options = []) {
     global $db;
 

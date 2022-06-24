@@ -1,7 +1,12 @@
 <?php
 class ActionList {
-  function show () {
-    $list = Video::get();
-    print_r($list);
+  function show ($options = []) {
+    $result = "";
+
+    foreach (Video::get() as $video) {
+      $result .= $video->show($options);
+    }
+
+    return $result;
   }
 }

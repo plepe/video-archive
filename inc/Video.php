@@ -41,6 +41,12 @@ class Video {
     }
   }
 
+  function fileName ($fileId, $options = []) {
+    if ($fileId === 'video') {
+      return "{$this->id}/video.mp4";
+    }
+  }
+
   function showTeaser ($options = []) {
     $result  = "<div id=\"{$this->id}\">\n";
     $result .= "<div class=\"videoContainer\"></div>\n";
@@ -52,7 +58,7 @@ class Video {
 
   function showFull ($options = []) {
     $result  = "<div id=\"{$this->id}\">\n";
-    $result .= "<div class=\"videoContainer\"></div>\n";
+    $result .= "<div class=\"videoContainer\"><video controls><source type=\"video/mp4\" src=\"download.php?id={$this->id}&amp;file=video\"></video></div>\n";
     $result .= "<div class=\"title\">{$this->data['title']}</div>\n";
     $result .= "</div>";
 

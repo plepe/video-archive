@@ -10,6 +10,10 @@ class ActionShow {
     $video = Video::get($this->id);
     $result .= $video->showFull($options);
 
+    $result .= "<div class='menu actions'><ul>";
+    $result .= "<li class='edit'><a href=\"?id={$this->id}&amp;action=edit\">edit</a></li>";
+    $result .= "</ul></div>";
+
     return $result;
   }
 }

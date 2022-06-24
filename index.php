@@ -8,11 +8,11 @@ $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
 
-$action_id = $_REQUEST['action'] ?? 'list';
 $id = $_REQUEST['id'] ?? null;
+$actionId = $_REQUEST['action'] ?? ($id ? 'show' : 'list');
 
-$action_class = "Action" . ucfirst($action_id);
-$action = new $action_class($id);
+$actionClass = "Action" . ucfirst($actionId);
+$action = new $actionClass($id);
 $content = $action->show();
 
 ?>

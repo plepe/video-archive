@@ -26,18 +26,17 @@ class Video {
         }
       }
 
-      print ('insert into entity (' . $db->quoteIdent('id') . ', `author`) values (' . $db->quote($this->id) . ', \'test\')');
       $db->query('insert into entity (' . $db->quoteIdent('id') . ', `author`) values (' . $db->quote($this->id) . ', \'test\')');
       $db->query('insert into video (' . implode(', ', $f) . ') values (' . implode(', ', $str) . ')');
     } else {
       $str = [];
-      foreach ($this->dbFields as $field) {
+      foreach ($this::$dbFields as $field) {
         if (array_key_exists($field, $data)) {
           $str[] = $db->quoteIdent($field) . '=' . $db->quote($data[$field]);
         }
       }
 
-      $db->query('update video set ' . implode(', ', $str) . ' where id=' . $db->quote($this-id));
+      $db->query('update video set ' . implode(', ', $str) . ' where id=' . $db->quote($this->id));
     }
   }
 

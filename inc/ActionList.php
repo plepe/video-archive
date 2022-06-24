@@ -1,6 +1,7 @@
 <?php
 class ActionList {
   function show () {
-    print "HI";
+    $list = Video::get();
+    print_r($list);
   }
 }

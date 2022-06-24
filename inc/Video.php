@@ -41,9 +41,14 @@ class Video {
     }
   }
 
-  static function get ($options) {
+  static function get ($options = []) {
     global $db;
 
-    //$qry = $db->query('select * from 
+    $qry = $db->query('select * from video left join entity on video.id=entity.id');
+    $res = $qry->fetchAll();
+
+    return array_map(function ($elem) {
+      return new Video($elem['id'], $elem);
+    }, $res);
   }
 }

@@ -41,7 +41,16 @@ class Video {
     }
   }
 
-  function show ($options = []) {
+  function showTeaser ($options = []) {
+    $result  = "<div id=\"{$this->id}\">\n";
+    $result .= "<div class=\"videoContainer\"></div>\n";
+    $result .= "<div class=\"title\"><a href=\"?id={$this->id}&amp;action=show\">{$this->data['title']}</a></div>\n";
+    $result .= "</div>";
+
+    return $result;
+  }
+
+  function showFull ($options = []) {
     $result  = "<div id=\"{$this->id}\">\n";
     $result .= "<div class=\"videoContainer\"></div>\n";
     $result .= "<div class=\"title\">{$this->data['title']}</div>\n";
@@ -50,7 +59,7 @@ class Video {
     return $result;
   }
 
-  static function get ($options = []) {
+  static function list ($options = []) {
     global $db;
 
     $qry = $db->query('select * from video left join entity on video.id=entity.id');
@@ -59,5 +68,18 @@ class Video {
     return array_map(function ($elem) {
       return new Video($elem['id'], $elem);
     }, $res);
+  }
+
+  static function get ($id, $options = []) {
+    global $db;
+
+    $qry = $db->query('select * from video left join entity on video.id=entity.id where video.id=' . $db->quote($id));
+    $res = $qry->fetchAll();
+
+    if (sizeof($res)) {
+      return new Video($id, $res[0]);
+    }
+
+    return null;
   }
 }

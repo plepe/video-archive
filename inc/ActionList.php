@@ -3,8 +3,8 @@ class ActionList {
   function show ($options = []) {
     $result = "";
 
-    foreach (Video::get() as $video) {
-      $result .= $video->show($options);
+    foreach (Video::list() as $video) {
+      $result .= $video->showTeaser($options);
     }
 
     return $result;

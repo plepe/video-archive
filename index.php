@@ -18,6 +18,19 @@ $actionClass = "Action" . ucfirst($actionId);
 $action = new $actionClass($id);
 $content = $action->show();
 
+$main_menu = [];
+if ($auth->is_logged_in()) {
+  $main_menu[] = [
+    'url' => '?action=logout',
+    'text' => 'Logout',
+  ];
+} else {
+  $main_menu[] = [
+    'url' => '?action=login',
+    'text' => 'Login',
+  ];
+}
+
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -32,5 +45,16 @@ $content = $action->show();
 <?php
 print $content;
 ?>
+
+<div id='main-menu'>
+<ul>
+<?php
+foreach ($main_menu as $link) {
+  print '<li><a href="' . htmlentities($link['url']) . '">' . htmlentities($link['text']) . '</a></li>';
+}
+?>
+</ul>
+</div>
+
 </body>
 </html>

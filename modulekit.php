@@ -5,6 +5,7 @@ $depend = array(
   "modulekit-form",
   "modulekit-history",
   "modulekit-auth",
+  "auth-pages",
   "PDOext",
 ); // use modulekit-form and all its requirements
 $include = array(

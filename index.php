@@ -3,7 +3,6 @@
 <?php session_start(); ?>
 <?php call_hooks("init"); /* initialize submodules */ ?>
 <?php
-$auth = new Auth($auth_config);
 $current_user = $auth->current_user();
 
 $db = new PDOext($db_conf);

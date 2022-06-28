@@ -1,7 +1,11 @@
 <?php include "conf.php"; /* load a local configuration */ ?>
 <?php include "modulekit/loader.php"; /* loads all php-includes */ ?>
+<?php session_start(); ?>
 <?php call_hooks("init"); /* initialize submodules */ ?>
 <?php
+$auth = new Auth($auth_config);
+$current_user = $auth->current_user();
+
 $db = new PDOext($db_conf);
 $db->setAttribute(PDO::MYSQL_ATTR_INIT_COMMAND, "SET NAMES utf8");
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

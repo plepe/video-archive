@@ -35,6 +35,15 @@ $auth_config=array(
   #'require-group' => "&group@default",
 );
 
+// Default access rights
+$default_access = array(
+  // default rights for a specific user
+  'user@default' => ['create', 'view', 'list', 'update', 'delete'],
+
+  // default rights for anonymous visitors
+  '' => ['view', 'list'],
+);
+
 // Name for session - you should always use a unique ID for each app on the
 // same host
 session_name('video-archive');

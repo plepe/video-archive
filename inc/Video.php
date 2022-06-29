@@ -59,7 +59,10 @@ class Video extends Entity {
 
     $qry = $db->query('select * from video left join entity on video.id=entity.id');
     while ($elem = $qry->fetch()) {
-      yield new Video($elem['id'], $elem);
+      $video = new Video($elem['id'], $elem);
+      if ($video->access('list')) {
+        yield $video;
+      }
     }
   }
 

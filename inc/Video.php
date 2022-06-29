@@ -58,11 +58,9 @@ class Video extends Entity {
     global $db;
 
     $qry = $db->query('select * from video left join entity on video.id=entity.id');
-    $res = $qry->fetchAll();
-
-    return array_map(function ($elem) {
-      return new Video($elem['id'], $elem);
-    }, $res);
+    while ($elem = $qry->fetch()) {
+      yield new Video($elem['id'], $elem);
+    }
   }
 
   static function get ($id, $options = []) {

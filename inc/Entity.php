@@ -23,6 +23,8 @@ class Entity {
   function access ($type) {
     global $auth;
     global $db;
+    $default_overrides = [];
+    $userId = $auth->current_user()->id();
 
     $res = $db->query('select * from entity_access where id=' . $db->quote($this->id) . ' and ' . $db->quoteIdent("access_{$type}") . '=true');
     while ($elem = $res->fetch()) {
@@ -31,9 +33,22 @@ class Entity {
       }
     }
 
+    $res = $db->query('select * from entity_access where id=' . $db->quote($this->id) . ' and ' . $db->quoteIdent("access_{$type}") . '=false');
+    while ($elem = $res->fetch()) {
+      // Explicit deny for this user
+      if ($elem['user'] === $userId) {
+        return false;
+      }
+
+      // Might be denied
+      if ($auth->access($elem['user'])) {
+        $default_overrides[] = $elem['user'];
+      }
+    }
+
     global $default_access;
     foreach ($default_access as $user => $rights) {
-      if (in_array($type, $rights) && $auth->access($user)) {
+      if (in_array($type, $rights) && $auth->access($user) && !in_array($user, $default_overrides)) {
         return true;
       }
     }

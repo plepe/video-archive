@@ -32,10 +32,10 @@ create table if not exists playlist_video (
 create table if not exists entity_access (
   id            char(16)        not null,
   user          tinytext        not null,
-  access_view   boolean         not null,
-  access_list   boolean         not null,
-  access_update boolean         not null,
-  access_delete boolean         not null,
+  access_view   boolean         null,
+  access_list   boolean         null,
+  access_update boolean         null,
+  access_delete boolean         null,
   foreign key(id) references entity(id) on update cascade on delete cascade
 ) CHARACTER SET utf8 COLLATE utf8_bin;
 

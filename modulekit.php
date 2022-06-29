@@ -10,6 +10,7 @@ $depend = array(
 ); // use modulekit-form and all its requirements
 $include = array(
   'php' => array(
+    'inc/Entity.php',
     'inc/*.php' // automatically include all files in inc-directory
   ),
   'js' => array(

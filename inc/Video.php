@@ -1,20 +1,11 @@
 <?php
-class Video {
+class Video extends Entity {
   public static $dbFields = ['id', 'title', 'date', 'filesize'];
-
-  function __construct ($id = null, $data = null) {
-    if (!$id) {
-      $this->id = generateId();
-      $this->isNew = true;
-    } else {
-      $this->id = $id;
-      $this->data = $data;
-      $this->isNew = false;
-    }
-  }
 
   function save ($data, $changeset) {
     global $db;
+
+    parent::save($data, $changeset);
 
     if ($this->isNew) {
       $f = [$db->quoteIdent('id')];
@@ -26,7 +17,6 @@ class Video {
         }
       }
 
-      $db->query('insert into entity (' . $db->quoteIdent('id') . ', `author`) values (' . $db->quote($this->id) . ', \'test\')');
       $db->query('insert into video (' . implode(', ', $f) . ') values (' . implode(', ', $str) . ')');
     } else {
       $str = [];

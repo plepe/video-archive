@@ -8,6 +8,11 @@ class ActionShow {
     $result = "";
 
     $video = Video::get($this->id);
+
+    if (!$video->access('view')) {
+      return 'Access denied';
+    }
+
     $result .= $video->showFull($options);
 
     $result .= "<div class='menu actions'><ul>";

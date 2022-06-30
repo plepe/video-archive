@@ -10,6 +10,7 @@ create table if not exists video (
   title         tinytext        null,
   date          text            null,
   filesize      int             not null,
+  duration      float           null,
   foreign key(id) references entity(id) on update cascade on delete cascade,
   primary key(id)
 ) CHARACTER SET utf8 COLLATE utf8_bin;

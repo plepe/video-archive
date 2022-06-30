@@ -17,7 +17,7 @@ class ActionNewVideo {
         'type'    => 'file',
         'name'    => 'Video file',
         'path'    => "{$data_dir}/{$video->id}",
-        'template' => 'video.[ext]',
+        'template' => 'original.[ext]',
         'req'     => true,
       ],
       'date'    => [
@@ -35,6 +35,7 @@ print_r($data);
       $changeset = new Changeset('new video');
       $changeset->open();
       $video->save($data, $changeset);
+      $video->processCreate([], $changeset);
       $changeset->commit();
 
       return "Uploaded";

@@ -2,16 +2,15 @@
 class ActionEdit {
   function __construct ($id) {
     $this->id = $id;
+    $this->entity = Entity::get($this->id);
   }
 
   function access () {
-    $video = Video::get($this->id);
-    return !$video->access('update');
+    return $this->entity->access('update');
   }
 
   function show () {
     global $data_dir;
-    $video = Video::get($this->id);
 
     $form = new form('data', [
       'title'   => [
@@ -21,7 +20,7 @@ class ActionEdit {
       'file'    => [
         'type'    => 'file',
         'name'    => 'Video file',
-        'path'    => "{$data_dir}/{$video->id}",
+        'path'    => "{$data_dir}/{$this->entity->id}",
         'web_path' => "download.php?id={$this->id}&file=video",
         'template' => 'video.[ext]',
         'req'     => true,
@@ -32,7 +31,7 @@ class ActionEdit {
       ],
     ]);
 
-    $data = $video->data;
+    $data = $this->entity->data;
     $data['file'] = [
       'name' => 'video.mp4',
       'type' => 'video/mp4',
@@ -44,13 +43,13 @@ class ActionEdit {
     }
 
     if ($form->is_complete()) {
-      mkdir("{$data_dir}/{$video->id}");
+      mkdir("{$data_dir}/{$this->entity->id}");
       $data = $form->save_data();
       $data['filesize'] = $data['file']['size'];
 
       $changeset = new Changeset('new video');
       $changeset->open();
-      $video->save($data, $changeset);
+      $this->entity->save($data, $changeset);
       $changeset->commit();
 
       return "Uploaded";

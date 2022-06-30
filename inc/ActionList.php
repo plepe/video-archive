@@ -7,8 +7,8 @@ class ActionList {
   function show ($options = []) {
     $result = "";
 
-    foreach (Video::list() as $video) {
-      $result .= $video->showTeaser($options);
+    foreach (Entity::list() as $entity) {
+      $result .= $entity->showTeaser($options);
     }
 
     return $result;

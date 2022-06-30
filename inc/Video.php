@@ -2,6 +2,17 @@
 class Video extends Entity {
   public static $dbFields = ['id', 'title', 'date', 'filesize'];
 
+  function load () {
+    global $db;
+
+    if (!$this->isLoaded) {
+      $qry = $db->query('select * from video where video.id=' . $db->quote($this->id));
+      $res = $qry->fetchAll();
+
+      $this->data = array_merge($this->data, $res[0]);
+    }
+  }
+
   function save ($data, $changeset) {
     global $db;
 
@@ -52,30 +63,5 @@ class Video extends Entity {
     $result .= "</div>";
 
     return $result;
-  }
-
-  static function list ($options = []) {
-    global $db;
-
-    $qry = $db->query('select * from video left join entity on video.id=entity.id');
-    while ($elem = $qry->fetch()) {
-      $video = new Video($elem['id'], $elem);
-      if ($video->access('list')) {
-        yield $video;
-      }
-    }
-  }
-
-  static function get ($id, $options = []) {
-    global $db;
-
-    $qry = $db->query('select * from video left join entity on video.id=entity.id where video.id=' . $db->quote($id));
-    $res = $qry->fetchAll();
-
-    if (sizeof($res)) {
-      return new Video($id, $res[0]);
-    }
-
-    return null;
   }
 }

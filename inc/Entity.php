@@ -9,6 +9,8 @@ class Entity {
       $this->data = $data;
       $this->isNew = false;
     }
+
+    $this->isLoaded = false;
   }
 
   function save ($data, $changeset) {
@@ -54,5 +56,48 @@ class Entity {
     }
 
     return false;
+  }
+
+  static function list ($options = []) {
+    global $db;
+
+    $qry = $db->query('select * from entity');
+    while ($elem = $qry->fetch()) {
+      switch ($elem['type']) {
+        case 'video':
+          $entity = new Video($elem['id'], $elem);
+          break;
+      }
+
+      if ($entity->access('list')) {
+        $entity->load();
+        yield $entity;
+      }
+    }
+  }
+
+  static function get ($id, $options = []) {
+    global $db;
+
+    $qry = $db->query('select * from entity where id=' . $db->quote($id));
+    $res = $qry->fetchAll();
+
+    if (sizeof($res)) {
+      $elem = $res[0];
+
+      switch ($elem['type']) {
+        case 'video':
+          $entity = new Video($elem['id'], $elem);
+          break;
+        default:
+          throw new Exception('Invalid entity type');
+      }
+
+      $entity->load();
+
+      return $entity;
+    }
+
+    return null;
   }
 }

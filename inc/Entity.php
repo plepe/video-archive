@@ -1,5 +1,7 @@
 <?php
 class Entity {
+  static $cache = [];
+
   function __construct ($id = null, $data = null) {
     if (!$id) {
       $this->id = generateId();
@@ -63,11 +65,18 @@ class Entity {
 
     $qry = $db->query('select * from entity');
     while ($elem = $qry->fetch()) {
-      switch ($elem['type']) {
-        case 'video':
-          $entity = new Video($elem['id'], $elem);
-          break;
+      if (array_key_exists($elem['id'], Entity::$cache)) {
+        $entity = Entity::$cache[$elem['id']];
       }
+      else {
+        switch ($elem['type']) {
+          case 'video':
+            $entity = new Video($elem['id'], $elem);
+            break;
+        }
+      }
+
+      Entity::$cache[$elem['id']] = $entity;
 
       if ($entity->access('list')) {
         $entity->load();
@@ -78,6 +87,12 @@ class Entity {
 
   static function get ($id, $options = []) {
     global $db;
+
+    if (array_key_exists($id, Entity::$cache)) {
+      $entity = Entity::$cache[$id];
+      $entity->load();
+      return $entity;
+    }
 
     $qry = $db->query('select * from entity where id=' . $db->quote($id));
     $res = $qry->fetchAll();
@@ -93,6 +108,7 @@ class Entity {
           throw new Exception('Invalid entity type');
       }
 
+      Entity::$cache[$elem['id']] = $entity;
       $entity->load();
 
       return $entity;

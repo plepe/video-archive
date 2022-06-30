@@ -61,6 +61,12 @@ class Entity {
     return false;
   }
 
+  function queue ($func, $options=null) {
+    global $db;
+
+    $res = $db->query('insert into process_queue (id, func, options) values (' . $db->quote($this->id) . ', ' . $db->quote($func) . ', ' . $db->quote(json_encode($options)) . ')');
+  }
+
   static function list ($options = []) {
     global $db;
 

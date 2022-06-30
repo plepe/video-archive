@@ -35,7 +35,7 @@ print_r($data);
       $changeset = new Changeset('new video');
       $changeset->open();
       $video->save($data, $changeset);
-      $video->processCreate([], $changeset);
+      $video->queue('Create', []);
       $changeset->commit();
 
       return "Uploaded";

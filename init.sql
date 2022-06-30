@@ -1,6 +1,6 @@
 create table if not exists entity (
   id            char(16)        not null,
-  author        tinytext        not null,
+  author        varchar(255)    not null,
   primary key(id)
 ) CHARACTER SET utf8 COLLATE utf8_bin;
 
@@ -31,11 +31,12 @@ create table if not exists playlist_video (
 
 create table if not exists entity_access (
   id            char(16)        not null,
-  user          tinytext        not null,
+  user          varchar(255)    not null,
   access_view   boolean         null,
   access_list   boolean         null,
   access_update boolean         null,
   access_delete boolean         null,
+  primary key(id, user),
   foreign key(id) references entity(id) on update cascade on delete cascade
 ) CHARACTER SET utf8 COLLATE utf8_bin;
 

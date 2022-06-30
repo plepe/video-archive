@@ -12,11 +12,18 @@ class ActionShow {
   function show ($options = []) {
     $result = "";
 
-    $result .= $this->entity->showFull($options);
+    return $this->entity->showFull($options);
+  }
 
-    $result .= "<div class='menu actions'><ul>";
-    $result .= "<li class='edit'><a href=\"?id={$this->id}&amp;action=edit\">edit</a></li>";
-    $result .= "</ul></div>";
+  function menu () {
+    $result = [];
+
+    if ($this->entity->access('update')) {
+      $result[] = [
+        'url' => "?id={$this->id}&action=edit",
+        'text' => 'edit',
+      ];
+    }
 
     return $result;
   }

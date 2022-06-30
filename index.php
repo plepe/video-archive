@@ -37,6 +37,10 @@ if ($auth->is_logged_in()) {
   ];
 }
 
+if (method_exists($action, 'menu')) {
+  $main_menu = array_merge($main_menu, $action->menu());
+}
+
 ?>
 <!DOCTYPE HTML>
 <html>

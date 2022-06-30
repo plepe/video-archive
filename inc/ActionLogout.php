@@ -19,6 +19,16 @@ class ActionLogout {
     }
   }
 
+  function menu () {
+    global $auth;
+
+    if ($auth->is_logged_in()) {
+      return [
+        '?action=logout' => 'Logout',
+      ];
+    }
+  }
+
   function show ($options = []) {
     return 'Logged out.';
   }

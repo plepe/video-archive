@@ -62,4 +62,17 @@ class ActionEdit {
 
     return $text;
   }
+
+  function menu () {
+    $result = [];
+
+    if ($this->entity->access('view')) {
+      $result[] = [
+        'url' => "?id={$this->id}&action=show",
+        'text' => 'view',
+      ];
+    }
+
+    return $result;
+  }
 }

@@ -13,4 +13,17 @@ class ActionList {
 
     return $result;
   }
+
+  function menu () {
+    $result = [];
+
+    if (default_access('create')) {
+      $result[] = [
+        'url' => "?action=newVideo",
+        'text' => 'Upload Video',
+      ];
+    }
+
+    return $result;
+  }
 }

@@ -15,10 +15,11 @@ class Video extends Entity {
 
   function save ($data, $changeset) {
     global $db;
+    $isNew = $this->isNew;
 
     parent::save($data, $changeset);
 
-    if ($this->isNew) {
+    if ($isNew) {
       $f = [$db->quoteIdent('id')];
       $str = [$db->quote($this->id)];
       foreach ($this::$dbFields as $field) {

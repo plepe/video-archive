@@ -19,7 +19,8 @@ class Entity {
     global $db;
 
     if ($this->isNew) {
-      $db->query('insert into entity (' . $db->quoteIdent('id') . ', `author`) values (' . $db->quote($this->id) . ', \'test\')');
+      $db->query('insert into entity (' . $db->quoteIdent('id') . ', ' . $db->quoteIdent('type') . ', `author`) values (' . $db->quote($this->id) . ', '. $db->quote(get_class($this)) . ', \'test\')');
+      $this->isNew = false;
     }
   }
 
@@ -70,7 +71,7 @@ class Entity {
       }
       else {
         switch ($elem['type']) {
-          case 'video':
+          case 'Video':
             $entity = new Video($elem['id'], $elem);
             break;
         }
@@ -101,7 +102,7 @@ class Entity {
       $elem = $res[0];
 
       switch ($elem['type']) {
-        case 'video':
+        case 'Video':
           $entity = new Video($elem['id'], $elem);
           break;
         default:

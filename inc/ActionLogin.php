@@ -13,6 +13,10 @@ class ActionLogin {
     }
   }
 
+  function access () {
+    return true;
+  }
+
   function show ($options = []) {
     return $this->form->show_form();
   }

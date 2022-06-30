@@ -11,6 +11,14 @@ class ActionLogout {
       header("Location: .");
   }
 
+  function access () {
+    global $auth;
+
+    if ($auth->is_logged_in()) {
+      return true;
+    }
+  }
+
   function show ($options = []) {
     return 'Logged out.';
   }

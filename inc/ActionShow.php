@@ -4,14 +4,15 @@ class ActionShow {
     $this->id = $id;
   }
 
+  function access () {
+    $video = Video::get($this->id);
+    return $video->access('view');
+  }
+
   function show ($options = []) {
     $result = "";
 
     $video = Video::get($this->id);
-
-    if (!$video->access('view')) {
-      return 'Access denied';
-    }
 
     $result .= $video->showFull($options);
 

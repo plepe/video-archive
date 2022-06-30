@@ -4,6 +4,11 @@ class ActionEdit {
     $this->id = $id;
   }
 
+  function access () {
+    $video = Video::get($this->id);
+    return !$video->access('update');
+  }
+
   function show () {
     global $data_dir;
     $video = Video::get($this->id);

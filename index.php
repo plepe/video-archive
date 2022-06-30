@@ -16,7 +16,13 @@ $actionId = $_REQUEST['action'] ?? ($id ? 'show' : 'list');
 
 $actionClass = "Action" . ucfirst($actionId);
 $action = new $actionClass($id);
-$content = $action->show();
+
+if ($action->access()) {
+  $content = $action->show();
+}
+else {
+  $content = 'Access denied';
+}
 
 $main_menu = [];
 if ($auth->is_logged_in()) {

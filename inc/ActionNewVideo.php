@@ -1,5 +1,9 @@
 <?php
 class ActionNewVideo {
+  function access () {
+    return default_access('create');
+  }
+
   function show () {
     global $data_dir;
     $video = new Video();

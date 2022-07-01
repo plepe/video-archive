@@ -30,7 +30,7 @@ class ActionNewVideo {
       mkdir("{$data_dir}/{$video->id}");
       $data = $form->save_data();
       $data['filesize'] = $data['file']['size'];
-print_r($data);
+      $data['originalFile'] = $data['file']['name'];
 
       $changeset = new Changeset('new video');
       $changeset->open();

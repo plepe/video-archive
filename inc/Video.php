@@ -1,6 +1,6 @@
 <?php
 class Video extends Entity {
-  public static $dbFields = ['id', 'title', 'date', 'filesize', 'duration'];
+  public static $dbFields = ['id', 'title', 'date', 'originalFile', 'filesize', 'duration'];
 
   function load () {
     global $db;
@@ -47,7 +47,7 @@ class Video extends Entity {
       return "{$this->id}/video.mp4";
     }
     if ($fileId === 'original') {
-      return "{$this->id}/original.mp4";
+      return "{$this->id}/{$this->data['originalFile']}";
     }
   }
 

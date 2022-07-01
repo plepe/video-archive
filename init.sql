@@ -9,6 +9,7 @@ create table if not exists video (
   id            char(16)        not null,
   title         tinytext        null,
   date          text            null,
+  originalFile  tinytext     null,
   filesize      int             not null,
   duration      float           null,
   foreign key(id) references entity(id) on update cascade on delete cascade,

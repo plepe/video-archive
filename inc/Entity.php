@@ -1,5 +1,6 @@
 <?php
 class Entity {
+  public static $dbEntityFields = [];
   static $cache = [];
 
   function __construct ($id = null, $data = null) {
@@ -18,21 +19,26 @@ class Entity {
   function save ($data, $changeset) {
     global $db;
 
+    $fields = [];
+    foreach ($this::$dbEntityFields as $field) {
+      if (array_key_exists($field, $data)) {
+        $fields[$field] = $data[$field];
+      }
+    }
+
     if ($this->isNew) {
-      $db->query(dbCompileInsert('entity', [
-        'id' => $this->id,
-        'type' => get_class($this),
-        'author' => 'test',
-      ]));
+      $fields['id'] = $this->id;
+      $fields['type'] = get_class($this);
+      $fields['author'] = 'test';
+
+      $db->query(dbCompileInsert('entity', $fields));
 
       $this->isNew = false;
     }
     else {
-      $db->query(dbCompileUpdate('entity', [
-        'tsUpdate' => (new DateTime())->format('Y-m-d G:i:s'),
-      ], [
-        'id' => $this->id,
-      ]));
+      $fields['tsUpdate'] = (new DateTime())->format('Y-m-d G:i:s');
+
+      $db->query(dbCompileUpdate('entity', $fields, ['id' => $this->id]));
     }
   }
 

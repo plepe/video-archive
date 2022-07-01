@@ -79,6 +79,7 @@ class Video extends Entity {
     }
     system($cmd);
 
+    $data['ready'] = true;
     $this->save($data, $changeset);
   }
 }

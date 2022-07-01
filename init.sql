@@ -2,6 +2,7 @@ create table if not exists entity (
   id            char(16)        not null,
   type          varchar(16)     not null,
   author        varchar(255)    not null,
+  ready         boolean         not null default true,
   tsCreate      datetime        not null default CURRENT_TIMESTAMP,
   tsUpdate      datetime        not null default CURRENT_TIMESTAMP,
   primary key(id)

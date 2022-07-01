@@ -29,6 +29,7 @@ class ActionNewVideo {
     if ($form->is_complete()) {
       mkdir("{$data_dir}/{$video->id}");
       $data = $form->save_data();
+      $data['ready'] = false;
       $data['filesize'] = $data['file']['size'];
       $data['originalFile'] = $data['file']['name'];
 

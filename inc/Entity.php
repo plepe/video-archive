@@ -1,6 +1,6 @@
 <?php
 class Entity {
-  public static $dbEntityFields = [];
+  public static $dbEntityFields = ['ready'];
   static $cache = [];
 
   function __construct ($id = null, $data = null) {

@@ -27,6 +27,13 @@ class Entity {
 
       $this->isNew = false;
     }
+    else {
+      $db->query(dbCompileUpdate('entity', [
+        'tsUpdate' => (new DateTime())->format('Y-m-d G:i:s'),
+      ], [
+        'id' => $this->id,
+      ]));
+    }
   }
 
   // type: view, list, update, delete

@@ -2,6 +2,8 @@ create table if not exists entity (
   id            char(16)        not null,
   type          varchar(16)     not null,
   author        varchar(255)    not null,
+  tsCreate      datetime        not null default CURRENT_TIMESTAMP,
+  tsUpdate      datetime        not null,
   primary key(id)
 ) CHARACTER SET utf8 COLLATE utf8_bin;
 

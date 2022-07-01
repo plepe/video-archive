@@ -38,7 +38,9 @@ class Video extends Entity {
         }
       }
 
-      $db->query('update video set ' . implode(', ', $str) . ' where id=' . $db->quote($this->id));
+      if (sizeof($str)) {
+        $db->query('update video set ' . implode(', ', $str) . ' where id=' . $db->quote($this->id));
+      }
     }
   }
 

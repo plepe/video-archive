@@ -19,7 +19,12 @@ class Entity {
     global $db;
 
     if ($this->isNew) {
-      $db->query('insert into entity (' . $db->quoteIdent('id') . ', ' . $db->quoteIdent('type') . ', `author`) values (' . $db->quote($this->id) . ', '. $db->quote(get_class($this)) . ', \'test\')');
+      $db->query(dbCompileInsert('entity', [
+        'id' => $this->id,
+        'type' => get_class($this),
+        'author' => 'test',
+      ]));
+
       $this->isNew = false;
     }
   }

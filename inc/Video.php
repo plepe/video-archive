@@ -19,27 +19,19 @@ class Video extends Entity {
 
     parent::save($data, $changeset);
 
+    $fields = [];
+    foreach ($this::$dbFields as $field) {
+      if (array_key_exists($field, $data)) {
+        $fields[$field] = $data[$field];
+      }
+    }
+
     if ($isNew) {
-      $f = [$db->quoteIdent('id')];
-      $str = [$db->quote($this->id)];
-      foreach ($this::$dbFields as $field) {
-        if (array_key_exists($field, $data)) {
-          $f[] = $db->quoteIdent($field);
-          $str[] = $db->quote($data[$field]);
-        }
-      }
-
-      $db->query('insert into video (' . implode(', ', $f) . ') values (' . implode(', ', $str) . ')');
+      $fields['id'] = $this->id;
+      $db->query(dbCompileInsert('video', $fields));
     } else {
-      $str = [];
-      foreach ($this::$dbFields as $field) {
-        if (array_key_exists($field, $data)) {
-          $str[] = $db->quoteIdent($field) . '=' . $db->quote($data[$field]);
-        }
-      }
-
-      if (sizeof($str)) {
-        $db->query('update video set ' . implode(', ', $str) . ' where id=' . $db->quote($this->id));
+      if (sizeof($fields)) {
+        $db->query(dbCompileUpdate('video', $fields, ['id' => $this->id]));
       }
     }
   }

@@ -25,6 +25,12 @@ else {
 }
 
 $main_menu = [];
+
+$main_menu[] = [
+  'url' => '.',
+  'text' => 'Home',
+];
+
 if ($auth->is_logged_in()) {
   $main_menu[] = [
     'url' => '?action=logout',

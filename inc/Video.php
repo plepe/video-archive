@@ -1,6 +1,7 @@
 <?php
 class Video extends Entity {
-  public static $dbFields = ['id', 'title', 'date', 'originalFile', 'filesize', 'duration'];
+  public static $dbFields = ['title', 'date', 'originalFile', 'filesize', 'duration'];
+  public static $dbTable = 'video';
 
   function load () {
     global $db;
@@ -10,29 +11,6 @@ class Video extends Entity {
       $res = $qry->fetchAll();
 
       $this->data = array_merge($this->data, $res[0]);
-    }
-  }
-
-  function save ($data, $changeset) {
-    global $db;
-    $isNew = $this->isNew;
-
-    parent::save($data, $changeset);
-
-    $fields = [];
-    foreach ($this::$dbFields as $field) {
-      if (array_key_exists($field, $data)) {
-        $fields[$field] = $data[$field];
-      }
-    }
-
-    if ($isNew) {
-      $fields['id'] = $this->id;
-      $db->query(dbCompileInsert('video', $fields));
-    } else {
-      if (sizeof($fields)) {
-        $db->query(dbCompileUpdate('video', $fields, ['id' => $this->id]));
-      }
     }
   }
 

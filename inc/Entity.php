@@ -19,26 +19,40 @@ class Entity {
   function save ($data, $changeset) {
     global $db;
 
-    $fields = [];
+    $entityFields = [];
     foreach ($this::$dbEntityFields as $field) {
+      if (array_key_exists($field, $data)) {
+        $entityFields[$field] = $data[$field];
+      }
+    }
+
+    $fields = [];
+    foreach ($this::$dbFields as $field) {
       if (array_key_exists($field, $data)) {
         $fields[$field] = $data[$field];
       }
     }
 
     if ($this->isNew) {
-      $fields['id'] = $this->id;
-      $fields['type'] = get_class($this);
-      $fields['author'] = 'test';
+      $entityFields['id'] = $this->id;
+      $entityFields['type'] = get_class($this);
+      $entityFields['author'] = 'test';
 
-      $db->query(dbCompileInsert('entity', $fields));
+      $db->query(dbCompileInsert('entity', $entityFields));
+
+      $fields['id'] = $this->id;
+      $db->query(dbCompileInsert($this::$dbTable, $fields));
 
       $this->isNew = false;
     }
     else {
-      $fields['tsUpdate'] = (new DateTime())->format('Y-m-d G:i:s');
+      $entityFields['tsUpdate'] = (new DateTime())->format('Y-m-d G:i:s');
 
-      $db->query(dbCompileUpdate('entity', $fields, ['id' => $this->id]));
+      $db->query(dbCompileUpdate('entity', $entityFields, ['id' => $this->id]));
+
+      if (sizeof($fields)) {
+        $db->query(dbCompileUpdate('video', $fields, ['id' => $this->id]));
+      }
     }
   }
 

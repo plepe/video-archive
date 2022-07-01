@@ -4,7 +4,8 @@ $db_conf = [
   'type'     => 'mysql',
   'username' => 'username',
   'password' => 'password',
-  'dbname' => 'video_archive'
+  'dbname' => 'video_archive',
+  'debug' => 0, // set to 1 for queries as html comments
 ];
 
 // You should set a $data_dir to a directory which is not accessible by the web server. It has to be writeable by the web server though.

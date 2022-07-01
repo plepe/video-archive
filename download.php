@@ -2,6 +2,7 @@
 <?php include "modulekit/loader.php"; /* loads all php-includes */ ?>
 <?php call_hooks("init"); /* initialize submodules */ ?>
 <?php
+$db_conf['debug'] = 0;
 $db = new PDOext($db_conf);
 $db->setAttribute(PDO::MYSQL_ATTR_INIT_COMMAND, "SET NAMES utf8");
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

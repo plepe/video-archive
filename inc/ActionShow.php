@@ -12,6 +12,10 @@ class ActionShow {
   function show ($options = []) {
     $result = "";
 
+    if (!$this->entity->data['ready']) {
+      messages_add('Video has not been fully processed yet', MSG_NOTICE);
+    }
+
     return $this->entity->showFull($options);
   }
 

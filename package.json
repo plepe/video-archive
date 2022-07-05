@@ -25,5 +25,8 @@
   "devDependencies": {
     "browserify": "^17.0.0",
     "watchify": "^4.0.0"
+  },
+  "dependencies": {
+    "video.js": "^7.19.2"
   }
 }

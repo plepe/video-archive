@@ -44,6 +44,8 @@ class Video extends Entity {
   function processCreate ($options, $changeset) {
     global $data_dir;
     $recode = false;
+    $vcodec = 'copy';
+    $acodec = 'copy';
 
     $data = [];
 

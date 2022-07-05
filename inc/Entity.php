@@ -16,6 +16,24 @@ class Entity {
     $this->isLoaded = false;
   }
 
+  function load () {
+    global $db;
+
+    if ($this->isLoaded) {
+      return;
+    }
+
+    $qry = $db->query('select * from entity where id=' . $db->quote($this->id));
+    $res = $qry->fetchAll();
+    $this->data = array_merge($this->data, $res[0]);
+
+    if (method_exists($this, '_load')) {
+      $this->_load();
+    }
+
+    $this->isLoaded = true;
+  }
+
   function save ($data, $changeset) {
     global $db;
 

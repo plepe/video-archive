@@ -3,15 +3,12 @@ class Video extends Entity {
   public static $dbFields = ['title', 'date', 'originalFile', 'filesize', 'duration'];
   public static $dbTable = 'video';
 
-  function load () {
+  function _load () {
     global $db;
 
-    if (!$this->isLoaded) {
-      $qry = $db->query('select * from video where video.id=' . $db->quote($this->id));
-      $res = $qry->fetchAll();
-
-      $this->data = array_merge($this->data, $res[0]);
-    }
+    $qry = $db->query('select * from video where id=' . $db->quote($this->id));
+    $res = $qry->fetchAll();
+    $this->data = array_merge($this->data, $res[0]);
   }
 
   function fileName ($fileId, $options = []) {

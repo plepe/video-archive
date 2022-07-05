@@ -52,6 +52,10 @@ class Video extends Entity {
     $originalFile = "{$data_dir}/{$this->fileName('original')}";
     $videoFile = "{$data_dir}/{$this->fileName('video')}";
 
+    if (!preg_match('/\.mp4$/i', $originalFile)) {
+      $recode = true;
+    }
+
     exec("ffprobe " . escapeshellarg($originalFile) . " 2>&1", $output);
     foreach ($output as $r) {
       if (preg_match("/^  Duration: (\d+):(\d+):(\d+)\.(\d+),/", $r, $m)) {

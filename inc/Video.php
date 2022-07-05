@@ -75,8 +75,9 @@ class Video extends Entity {
       $cmd = "ffmpeg -i " . escapeshellarg($originalFile) . " -vcodec {$vcodec} -acodec {$acodec} -strict -2 -y " . escapeshellarg($videoFile);
     }
     else {
-      $cmd = "ln -s original.mp4 " . escapeshellarg($videoFile);
+      $cmd = "ln -s " . escapeshellarg($originalFile) . " " . escapeshellarg($videoFile);
     }
+    print "Running command: {$cmd}\n";
     system($cmd);
 
     $data['ready'] = true;

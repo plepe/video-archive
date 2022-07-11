@@ -54,6 +54,8 @@ class Entity {
         $db->query(dbCompileUpdate('video', $fields, ['id' => $this->id]));
       }
     }
+
+    return true;
   }
 
   // type: view, list, update, delete

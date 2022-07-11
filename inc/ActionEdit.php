@@ -32,10 +32,15 @@ class ActionEdit {
       $changeset = new Changeset('edit video');
 
       $changeset->open();
-      $this->entity->save($data, $changeset);
+      $result = $this->entity->save($data, $changeset);
       $changeset->commit();
 
-      return "Saved.";
+      if ($result) {
+        return "Saved. <a href='?id={$this->entity->id}'>View item</a>";
+      }
+      else {
+        return "An error occured.";
+      }
     }
 
     $text  = '<form enctype="multipart/form-data" method="post">';

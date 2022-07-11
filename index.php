@@ -59,6 +59,7 @@ if (method_exists($action, 'menu')) {
 </head>
 <body>
 <?php
+print messages_print();
 print $content;
 ?>
 

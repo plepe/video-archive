@@ -36,10 +36,12 @@ class ActionEdit {
       $changeset->commit();
 
       if ($result) {
-        return "Saved. <a href='?id={$this->entity->id}'>View item</a>";
+        messages_add("Saved. <a href='?id={$this->entity->id}'>View item</a>", MSG_NOTICE);
+        return "";
       }
       else {
-        return "An error occured.";
+        messages_add("An error occured.", MSG_ERROR);
+        return "";
       }
     }
 

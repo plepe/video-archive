@@ -14,6 +14,19 @@ class Video extends Entity {
     }
   }
 
+  function formEdit () {
+    return [
+      'title'   => [
+        'type'    => 'text',
+        'name'    => 'Title',
+      ],
+      'date'    => [
+        'type'    => 'datetime',
+        'name'    => 'Date',
+      ],
+    ];
+  }
+
   function fileName ($fileId, $options = []) {
     if ($fileId === 'video') {
       return "{$this->id}/video.mp4";

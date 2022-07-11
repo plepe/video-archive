@@ -12,24 +12,7 @@ class ActionEdit {
   function show () {
     global $data_dir;
 
-    $form = new form('data', [
-      'title'   => [
-        'type'    => 'text',
-        'name'    => 'Title',
-      ],
-      'file'    => [
-        'type'    => 'file',
-        'name'    => 'Video file',
-        'path'    => "{$data_dir}/{$this->entity->id}",
-        'web_path' => "download.php?id={$this->id}&file=video",
-        'template' => 'video.[ext]',
-        'req'     => true,
-      ],
-      'date'    => [
-        'type'    => 'datetime',
-        'name'    => 'Date',
-      ],
-    ]);
+    $form = new form('data', $this->entity->formEdit());
 
     $data = $this->entity->data;
     $data['file'] = [
@@ -45,14 +28,14 @@ class ActionEdit {
     if ($form->is_complete()) {
       mkdir("{$data_dir}/{$this->entity->id}");
       $data = $form->save_data();
-      $data['filesize'] = $data['file']['size'];
 
-      $changeset = new Changeset('new video');
+      $changeset = new Changeset('edit video');
+
       $changeset->open();
       $this->entity->save($data, $changeset);
       $changeset->commit();
 
-      return "Uploaded";
+      return "Saved.";
     }
 
     $text  = '<form enctype="multipart/form-data" method="post">';

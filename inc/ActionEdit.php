@@ -36,7 +36,8 @@ class ActionEdit {
       $changeset->commit();
 
       if ($result) {
-        messages_add("Saved. <a href='?id={$this->entity->id}'>View item</a>", MSG_NOTICE);
+        reload('?id=' . $this->entity->id);
+        messages_add("Saved.", MSG_NOTICE);
         return "";
       }
       else {

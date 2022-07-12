@@ -40,7 +40,7 @@ class ActionNewVideo {
 
       if ($result) {
         $video->queue('Create', []);
-        reload('?id=' . $this->entity->id);
+        reload(url([ 'id' => $this->entity->id ]));
         messages_add("Saved.", MSG_NOTICE);
         return "";
       }

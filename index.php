@@ -27,13 +27,13 @@ else {
 $main_menu = [];
 
 $main_menu[] = [
-  'url' => '.',
+  'url' => [],
   'text' => 'Home',
 ];
 
 if ($auth->is_logged_in()) {
   $main_menu[] = [
-    'url' => '?action=logout',
+    'url' => [ 'action' => 'logout' ],
     'text' => 'Logout',
   ];
 } else {
@@ -67,7 +67,7 @@ print $content;
 <ul>
 <?php
 foreach ($main_menu as $link) {
-  print '<li><a href="' . htmlentities($link['url']) . '">' . htmlentities($link['text']) . '</a></li>';
+  print '<li><a href="' . htmlentities(url($link['url'])) . '">' . htmlentities($link['text']) . '</a></li>';
 }
 ?>
 </ul>

@@ -20,7 +20,7 @@ class ActionShow {
 
     if ($this->entity->access('update')) {
       $result[] = [
-        'url' => "?id={$this->id}&action=edit",
+        'url' => [ 'id' => $this->id, 'action' => 'edit' ],
         'text' => 'edit',
       ];
     }

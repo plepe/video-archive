@@ -19,7 +19,7 @@ class ActionList {
 
     if (default_access('create')) {
       $result[] = [
-        'url' => "?action=newVideo",
+        'url' => [ 'action' => 'newVideo' ],
         'text' => 'Upload Video',
       ];
     }

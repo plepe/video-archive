@@ -24,7 +24,8 @@ class ActionLogout {
 
     if ($auth->is_logged_in()) {
       return [
-        '?action=logout' => 'Logout',
+        'url' => [ 'action' => 'logout' ],
+        'text' => 'Logout',
       ];
     }
   }

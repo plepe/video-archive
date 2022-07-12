@@ -59,7 +59,7 @@ class ActionEdit {
 
     if ($this->entity->access('view')) {
       $result[] = [
-        'url' => "?id={$this->id}&action=show",
+        'url' => [ 'id' => $this->id, 'action' => 'show' ],
         'text' => 'view',
       ];
     }

@@ -35,9 +35,19 @@ class ActionNewVideo {
 
       $changeset = new Changeset('new video');
       $changeset->open();
-      $video->save($data, $changeset);
-      $video->queue('Create', []);
+      $result = $video->save($data, $changeset);
       $changeset->commit();
+
+      if ($result) {
+        $video->queue('Create', []);
+        reload('?id=' . $this->entity->id);
+        messages_add("Saved.", MSG_NOTICE);
+        return "";
+      }
+      else {
+        messages_add("An error occured.", MSG_ERROR);
+        return "";
+      }
 
       return "Uploaded";
     }

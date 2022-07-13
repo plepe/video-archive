@@ -47,7 +47,11 @@ class Playlist extends Entity {
   function showTeaser ($options = []) {
     $result  = "<div id=\"{$this->id}\">\n";
     $result .= "<div class=\"videoContainer\"></div>\n";
-    $result .= "<div class=\"title\"><a href=\"" . htmlentities(url([ 'id' => $this->id, 'action' => 'show' ])) . "\">{$this->data['title']}</a></div>\n";
+
+    $url = $options['additionalUrlParameters'] ?? [];
+    $url = array_merge($url, [ 'id' => $this->id, 'action' => 'show' ]);
+
+    $result .= "<div class=\"title\"><a href=\"" . htmlentities(url($url)) . "\">{$this->data['title']}</a></div>\n";
     $result .= "</div>";
 
     return $result;
@@ -57,9 +61,12 @@ class Playlist extends Entity {
     $result  = "<div id=\"{$this->id}\">\n";
     $result .= '<div class="playlist-content">';
 
+    $memberOptions = [];
+    $memberOptions['additionalUrlParameters'] = [ 'playlist' => $this->id ];
+
     foreach ($this->data['videos'] as $memberId) {
       $member = Entity::get($memberId);
-      $result .= $member>showTeaser($options);
+      $result .= $member->showTeaser($memberOptions);
     }
 
     $result .= '</div>';

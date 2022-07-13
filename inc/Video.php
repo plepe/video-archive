@@ -36,7 +36,11 @@ class Video extends Entity {
   function showTeaser ($options = []) {
     $result  = "<div id=\"{$this->id}\">\n";
     $result .= "<div class=\"videoContainer\"></div>\n";
-    $result .= "<div class=\"title\"><a href=\"?id={$this->id}&amp;action=show\">{$this->data['title']}</a></div>\n";
+
+    $url = $options['additionalUrlParameters'] ?? [];
+    $url = array_merge($url, [ 'id' => $this->id, 'action' => 'show' ]);
+
+    $result .= "<div class=\"title\"><a href=\"" . htmlentities(url($url)) . "\">{$this->data['title']}</a></div>\n";
     $result .= "</div>";
 
     return $result;

@@ -16,6 +16,10 @@ class ActionShow {
       messages_add('Video has not been fully processed yet', MSG_NOTICE);
     }
 
+    if (array_key_exists('playlist', $_REQUEST)) {
+      $options['playlist'] = $_REQUEST['playlist'];
+    }
+
     return $this->entity->showFull($options);
   }
 

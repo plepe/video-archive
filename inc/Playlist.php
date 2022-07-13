@@ -61,7 +61,7 @@ class Playlist extends Entity {
     $result  = "<div id=\"{$this->id}\">\n";
     $result .= '<div class="playlist-content">';
 
-    $memberOptions = [];
+    $memberOptions = $options;
     $memberOptions['additionalUrlParameters'] = [ 'playlist' => $this->id ];
 
     foreach ($this->data['videos'] as $memberId) {

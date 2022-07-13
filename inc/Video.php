@@ -34,7 +34,12 @@ class Video extends Entity {
   }
 
   function showTeaser ($options = []) {
-    $result  = "<div id=\"{$this->id}\">\n";
+    $classAdd = '';
+    if ($options['current'] === $this->id) {
+      $classAdd .= ' current';
+    }
+
+    $result  = "<div id=\"{$this->id}\" class=\"{$classAdd}\">\n";
     $result .= "<div class=\"videoContainer\"></div>\n";
 
     $url = $options['additionalUrlParameters'] ?? [];
@@ -50,6 +55,16 @@ class Video extends Entity {
     $result  = "<div id=\"{$this->id}\">\n";
     $result .= "<div class=\"videoContainer\"><video class='video-js' data-setup='{}' controls><source type=\"video/mp4\" src=\"download.php?id={$this->id}&amp;file=video\"></video></div>\n";
     $result .= "<div class=\"title\">{$this->data['title']}</div>\n";
+
+    if (array_key_exists('playlist', $options)) {
+      $result .= '<div class="playlist">';
+      $playlist = Entity::get($options['playlist']);
+      if ($playlist) {
+        $result .= $playlist->showFull([ 'current' => $this->id ]);
+      }
+      $result .= '</div>';
+    }
+
     $result .= "</div>";
 
     return $result;

@@ -59,6 +59,7 @@ class Entity {
       $db->query(dbCompileInsert('entity', $entityFields));
 
       $fields['id'] = $this->id;
+      print dbCompileInsert($this::$dbTable, $fields);
       $db->query(dbCompileInsert($this::$dbTable, $fields));
 
       $this->isNew = false;
@@ -130,6 +131,9 @@ class Entity {
           case 'Video':
             $entity = new Video($elem['id'], $elem);
             break;
+          case 'Playlist':
+            $entity = new Playlist($elem['id'], $elem);
+            break;
         }
       }
 
@@ -160,6 +164,9 @@ class Entity {
       switch ($elem['type']) {
         case 'Video':
           $entity = new Video($elem['id'], $elem);
+          break;
+        case 'Playlist':
+          $entity = new Playlist($elem['id'], $elem);
           break;
         default:
           throw new Exception('Invalid entity type');

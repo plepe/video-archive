@@ -31,6 +31,8 @@ class Playlist extends Entity {
       $res->closeCursor();
 
     }
+
+    return true;
   }
 
   function fileName ($fileId, $options = []) {

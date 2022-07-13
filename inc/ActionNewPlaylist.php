@@ -31,8 +31,18 @@ class ActionNewPlaylist {
 
       $changeset = new Changeset('new playlist');
       $changeset->open();
-      $playlist->save($data, $changeset);
+      $result = $playlist->save($data, $changeset);
       $changeset->commit();
+
+      if ($result) {
+        reload(url([ 'id' => $this->entity->id ]));
+        messages_add("Saved.", MSG_NOTICE);
+        return "";
+      }
+      else {
+        messages_add("An error occured.", MSG_ERROR);
+        return "";
+      }
 
       return "Saved";
     }

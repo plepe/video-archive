@@ -22,6 +22,10 @@ class ActionList {
         'url' => [ 'action' => 'newVideo' ],
         'text' => 'Upload Video',
       ];
+      $result[] = [
+        'url' => "?action=newPlaylist",
+        'text' => 'Create Playlist',
+      ];
     }
 
     return $result;

@@ -16,6 +16,24 @@ class Entity {
     $this->isLoaded = false;
   }
 
+  function load () {
+    global $db;
+
+    if ($this->isLoaded) {
+      return;
+    }
+
+    $qry = $db->query('select * from entity where id=' . $db->quote($this->id));
+    $res = $qry->fetchAll();
+    $this->data = array_merge($this->data, $res[0]);
+
+    if (method_exists($this, '_load')) {
+      $this->_load();
+    }
+
+    $this->isLoaded = true;
+  }
+
   function save ($data, $changeset) {
     global $db;
 
@@ -41,6 +59,7 @@ class Entity {
       $db->query(dbCompileInsert('entity', $entityFields));
 
       $fields['id'] = $this->id;
+      print dbCompileInsert($this::$dbTable, $fields);
       $db->query(dbCompileInsert($this::$dbTable, $fields));
 
       $this->isNew = false;
@@ -114,6 +133,9 @@ class Entity {
           case 'Video':
             $entity = new Video($elem['id'], $elem);
             break;
+          case 'Playlist':
+            $entity = new Playlist($elem['id'], $elem);
+            break;
         }
       }
 
@@ -144,6 +166,9 @@ class Entity {
       switch ($elem['type']) {
         case 'Video':
           $entity = new Video($elem['id'], $elem);
+          break;
+        case 'Playlist':
+          $entity = new Playlist($elem['id'], $elem);
           break;
         default:
           throw new Exception('Invalid entity type');

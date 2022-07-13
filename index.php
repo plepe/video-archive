@@ -53,11 +53,12 @@ if (method_exists($action, 'menu')) {
 <head>
 <?php print modulekit_include_js(); /* prints all js-includes */ ?>
 <?php print modulekit_include_css(); /* prints all css-includes */ ?>
+<link rel="stylesheet" href="node_modules/video.js/dist/video-js.min.css">
 <?php print_add_html_headers(); ?>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel='stylesheet' type='text/css' href='demo.css'/>
+<script src="dist/app.js"></script>
 </head>
-<body>
+<body class="action-<?=$actionId?>">
 <?php
 print messages_print();
 print $content;

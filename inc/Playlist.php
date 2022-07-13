@@ -1,27 +1,36 @@
 <?php
-class Video extends Entity {
-  public static $dbFields = ['title', 'date', 'originalFile', 'filesize', 'duration'];
-  public static $dbTable = 'video';
+class Playlist extends Entity {
+  public static $dbFields = ['title'];
+  public static $dbTable = 'playlist';
 
   function _load () {
     global $db;
 
-    $qry = $db->query('select * from video where id=' . $db->quote($this->id));
+    $qry = $db->query('select * from playlist where id=' . $db->quote($this->id));
     $res = $qry->fetchAll();
     $this->data = array_merge($this->data, $res[0]);
+
+    $qry = $db->query('select video_id from playlist_video where playlist_id=' . $db->quote($this->id) . ' order by weight asc');
+    $this->data['videos'] = array_map(function ($elem) {
+      return $elem['video_id'];
+    }, $qry->fetchAll());
   }
 
-  function formEdit () {
-    return [
-      'title'   => [
-        'type'    => 'text',
-        'name'    => 'Title',
-      ],
-      'date'    => [
-        'type'    => 'datetime',
-        'name'    => 'Date',
-      ],
-    ];
+  function save ($data, $changeset) {
+    global $db;
+
+    parent::save($data, $changeset);
+
+    $res = $db->query('delete from playlist_video where playlist_id=' . $db->quote($this->id));
+    $res->closeCursor();
+
+    foreach ($data['videos'] as $index => $id) {
+      $res = $db->query(dbCompileInsert('playlist_video',
+        ['playlist_id' => $this->id, 'video_id' => $id, 'weight' => $index]
+      ));
+      $res->closeCursor();
+
+    }
   }
 
   function fileName ($fileId, $options = []) {
@@ -44,8 +53,9 @@ class Video extends Entity {
 
   function showFull ($options = []) {
     $result  = "<div id=\"{$this->id}\">\n";
-    $result .= "<div class=\"videoContainer\"><video class='video-js' data-setup='{}' controls><source type=\"video/mp4\" src=\"download.php?id={$this->id}&amp;file=video\"></video></div>\n";
-    $result .= "<div class=\"title\">{$this->data['title']}</div>\n";
+//    $result .= "<div class=\"videoContainer\"><video class='video-js' data-setup='{}' controls><source type=\"video/mp4\" src=\"download.php?id={$this->id}&amp;file=video\"></video></div>\n";
+//    $result .= "<div class=\"title\">{$this->data['title']}</div>\n";
+    $result .= "<pre>" . print_r($this->data, 1) . "</pre>";
     $result .= "</div>";
 
     return $result;

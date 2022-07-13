@@ -45,7 +45,7 @@ class Playlist extends Entity {
   function showTeaser ($options = []) {
     $result  = "<div id=\"{$this->id}\">\n";
     $result .= "<div class=\"videoContainer\"></div>\n";
-    $result .= "<div class=\"title\"><a href=\"?id={$this->id}&amp;action=show\">{$this->data['title']}</a></div>\n";
+    $result .= "<div class=\"title\"><a href=\"" . htmlentities(url([ 'id' => $this->id, 'action' => 'show' ])) . "\">{$this->data['title']}</a></div>\n";
     $result .= "</div>";
 
     return $result;

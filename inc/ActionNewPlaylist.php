@@ -8,23 +8,7 @@ class ActionNewPlaylist {
     global $data_dir;
     $playlist = new Playlist();
 
-    $video_list = [];
-    foreach (Video::list() as $video) {
-      $video_list[$video->id] = $video->data['title'];
-    }
-
-    $form = new form('data', [
-      'title'   => [
-        'type'    => 'text',
-        'name'    => 'Title',
-      ],
-      'videos'    => [
-        'type'    => 'autocomplete',
-        'name'    => 'List of Videos',
-        'count'   => ['default' => 1, 'index_type' => 'array'],
-        'values'  => $video_list,
-      ],
-    ]);
+    $form = new form('data', $playlist->formEdit());
 
     if ($form->is_complete()) {
       $data = $form->save_data();

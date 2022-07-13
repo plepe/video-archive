@@ -111,4 +111,24 @@ class Playlist extends Entity {
     $data['ready'] = true;
     $this->save($data, $changeset);
   }
+
+  function formEdit () {
+    $video_list = [];
+    foreach (Video::list() as $video) {
+      $video_list[$video->id] = $video->data['title'];
+    }
+
+    return [
+      'title'   => [
+        'type'    => 'text',
+        'name'    => 'Title',
+      ],
+      'videos'    => [
+        'type'    => 'autocomplete',
+        'name'    => 'List of Videos',
+        'count'   => ['default' => 1, 'index_type' => 'array'],
+        'values'  => $video_list,
+      ],
+    ];
+  }
 }

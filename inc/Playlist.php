@@ -55,9 +55,14 @@ class Playlist extends Entity {
 
   function showFull ($options = []) {
     $result  = "<div id=\"{$this->id}\">\n";
-//    $result .= "<div class=\"videoContainer\"><video class='video-js' data-setup='{}' controls><source type=\"video/mp4\" src=\"download.php?id={$this->id}&amp;file=video\"></video></div>\n";
-//    $result .= "<div class=\"title\">{$this->data['title']}</div>\n";
-    $result .= "<pre>" . print_r($this->data, 1) . "</pre>";
+    $result .= '<div class="playlist-content">';
+
+    foreach ($this->data['videos'] as $memberId) {
+      $member = Entity::get($memberId);
+      $result .= $member>showTeaser($options);
+    }
+
+    $result .= '</div>';
     $result .= "</div>";
 
     return $result;

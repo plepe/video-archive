@@ -13,6 +13,12 @@ class ActionEdit {
     global $data_dir;
 
     if (array_key_exists('delete', $_REQUEST)) {
+      if (!$this->entity->access('delete')) {
+        reload(url([ 'id' => $this->entity->id ]));
+        messages_add("Access denied", MSG_ERROR);
+        return '';
+      }
+
       if (array_key_exists('delete-verify', $_REQUEST)) {
         $this->entity->remove();
         reload(url(['action' => 'list']));
@@ -72,7 +78,9 @@ class ActionEdit {
     $text  = '<form enctype="multipart/form-data" method="post">';
     $text .= $form->show();
     $text .= '<input type="submit" value="Save"/>';
-    $text .= '<input type="submit" name="delete" value="Delete"/>';
+    if ($this->entity->access('delete')) {
+      $text .= '<input type="submit" name="delete" value="Delete"/>';
+    }
     $text .= '</form>';
 
     return $text;

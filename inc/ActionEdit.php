@@ -12,6 +12,29 @@ class ActionEdit {
   function show () {
     global $data_dir;
 
+    if (array_key_exists('delete', $_REQUEST)) {
+      if (array_key_exists('delete-verify', $_REQUEST)) {
+        $this->entity->remove();
+        reload(url(['action' => 'list']));
+        messages_add("Deleted.", MSG_NOTICE);
+        return '';
+      }
+      else if (array_key_exists('delete-rebut', $_REQUEST)) {
+        reload(url([ 'id' => $this->entity->id ]));
+        messages_add("Not deleted.", MSG_NOTICE);
+        return "";
+      }
+      else {
+        $text  = '<form enctype="multipart/form-data" method="post">';
+        $text .= 'Really delete?<br>';
+        $text .= '<input type="hidden" name="delete" value="delete"/>';
+        $text .= '<input type="submit" name="delete-verify" value="Yes"/>';
+        $text .= '<input type="submit" name="delete-rebut" value="No"/>';
+        $text .= '</form>';
+        return $text;
+      }
+    }
+
     $form = new form('data', $this->entity->formEdit());
 
     $data = $this->entity->data;
@@ -48,7 +71,8 @@ class ActionEdit {
 
     $text  = '<form enctype="multipart/form-data" method="post">';
     $text .= $form->show();
-    $text .= '<input type="submit" value="Submit"/>';
+    $text .= '<input type="submit" value="Save"/>';
+    $text .= '<input type="submit" name="delete" value="Delete"/>';
     $text .= '</form>';
 
     return $text;

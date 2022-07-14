@@ -31,6 +31,9 @@ class Video extends Entity {
     if ($fileId === 'original') {
       return "{$this->id}/{$this->data['originalFile']}";
     }
+    if ($fileId === 'thumbnail') {
+      return "{$this->id}/thumbnail.jpg";
+    }
   }
 
   function showTeaser ($options = []) {
@@ -115,8 +118,19 @@ class Video extends Entity {
     print "Running command: {$cmd}\n";
     system($cmd);
 
+    $this->processUpdateThumbnail($options, $changeset);
+
     $data['ready'] = true;
     $this->save($data, $changeset);
+  }
+
+  function processUpdateThumbnail ($options, $changeset) {
+    global $data_dir;
+    $originalFile = "{$data_dir}/{$this->fileName('original')}";
+    $thumbFile = "{$data_dir}/{$this->fileName('thumbnail')}";
+
+    $cmd = "ffmpeg -ss 10 -i " . escapeshellarg($originalFile) . " -vframes 1 -q:v 2 " . escapeshellarg($thumbFile);
+    system($cmd);
   }
 
   function remove () {

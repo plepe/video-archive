@@ -36,7 +36,7 @@ class ActionEdit {
       $changeset->commit();
 
       if ($result) {
-        reload('?id=' . $this->entity->id);
+        reload(url([ 'id' => $this->entity->id ]));
         messages_add("Saved.", MSG_NOTICE);
         return "";
       }

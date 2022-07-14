@@ -118,4 +118,15 @@ class Video extends Entity {
     $data['ready'] = true;
     $this->save($data, $changeset);
   }
+
+  function remove () {
+    global $data_dir;
+
+    $result = delTree("{$data_dir}{$this->id}");
+    if (!$result) {
+      return false;
+    }
+
+    return parent::remove();
+  }
 }

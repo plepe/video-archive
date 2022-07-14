@@ -21,7 +21,7 @@ class Playlist extends Entity {
 
     parent::save($data, $changeset);
 
-    $res = $db->query('delete from playlist_video where playlist_id=' . $db->quote($this->id));
+    $db->query(dbCompileRemove('playlist_video', ['playlist_id' => $this->id]));
     $res->closeCursor();
 
     foreach ($data['videos'] as $index => $id) {
@@ -33,6 +33,12 @@ class Playlist extends Entity {
     }
 
     return true;
+  }
+
+  function remove () {
+    global $db;
+    $db->query(dbCompileRemove('playlist_video', ['playlist_id' => $this->id]));
+    return parent::remove();
   }
 
   function fileName ($fileId, $options = []) {

@@ -37,3 +37,19 @@ function dbCompileUpdate ($table, $values, $where) {
 
   return 'update ' . $db->quoteIdent($table) . ' set ' . implode(', ', $compiledEntries) . ' where ' . implode(' and ', $compiledWhere);
 }
+
+function dbCompileRemove ($table, $where) {
+  global $db;
+
+  $compiledWhere = [];
+
+  foreach ($where as $k => $v) {
+    if ($v === null) {
+      $compiledWhere[] = $db->quoteIdent($k) . ' is null';
+    } else {
+      $compiledWhere[] = $db->quoteIdent($k) . '=' . $db->quote($v);
+    }
+  }
+
+  return 'delete from ' . $db->quoteIdent($table) . ' where ' . implode(' and ', $compiledWhere);
+}

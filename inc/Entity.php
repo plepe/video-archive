@@ -77,6 +77,16 @@ class Entity {
     return true;
   }
 
+  function remove () {
+    global $db;
+
+    if (isset($this::$dbTable)) {
+      $db->query(dbCompileRemove($this::$dbTable, ['id' => $this->id]));
+    }
+
+    $db->query(dbCompileRemove('entity', ['id' => $this->id]));
+  }
+
   // type: view, list, update, delete
   function access ($type) {
     global $auth;

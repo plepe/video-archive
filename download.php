@@ -12,6 +12,13 @@ $fileId = $_REQUEST['file'] ?? 'video';
 $id = $_REQUEST['id'];
 
 $video = Video::get($id);
+
+if (!$video->access('view')) {
+  Header("HTTP/1.1 403 Forbidden");
+  print "Access denied.";
+  exit(0);
+}
+
 $fileName = $video->fileName($fileId);
 
 session_write_close();

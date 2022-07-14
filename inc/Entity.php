@@ -70,7 +70,7 @@ class Entity {
       $db->query(dbCompileUpdate('entity', $entityFields, ['id' => $this->id]));
 
       if (sizeof($fields)) {
-        $db->query(dbCompileUpdate('video', $fields, ['id' => $this->id]));
+        $db->query(dbCompileUpdate($this::$dbTable, $fields, ['id' => $this->id]));
       }
     }
 

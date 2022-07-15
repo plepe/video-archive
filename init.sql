@@ -19,6 +19,14 @@ create table if not exists video (
   primary key(id)
 ) CHARACTER SET utf8 COLLATE utf8_bin;
 
+create table if not exists share (
+  id            char(16)        not null,
+  reference     char(16)        not null,
+  foreign key(id) references entity(id) on update cascade on delete cascade,
+  foreign key(reference) references entity(id) on update cascade on delete cascade,
+  primary key(id)
+) CHARACTER SET utf8 COLLATE utf8_bin;
+
 create table if not exists playlist (
   id            char(16)        not null,
   title         tinytext        not null,

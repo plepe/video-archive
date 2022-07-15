@@ -33,6 +33,13 @@ class ActionShow {
       ];
     }
 
+    if (default_access('share')) {
+      $result[] = [
+        'url' => [ 'reference' => $this->id, 'action' => 'newShare' ],
+        'text' => 'create share',
+      ];
+    }
+
     return $result;
   }
 }

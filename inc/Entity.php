@@ -23,7 +23,7 @@ class Entity {
       return;
     }
 
-    $qry = $db->query('select * from entity where id=' . $db->quote($this->id));
+    $qry = $db->query(dbCompileSelect('entity', [ 'id' => $this->id ]));
     $res = $qry->fetchAll();
     $this->data = array_merge($this->data, $res[0]);
 

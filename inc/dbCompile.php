@@ -53,3 +53,19 @@ function dbCompileRemove ($table, $where) {
 
   return 'delete from ' . $db->quoteIdent($table) . ' where ' . implode(' and ', $compiledWhere);
 }
+
+function dbCompileSelect ($table, $where, $fields=null) {
+  global $db;
+
+  $compiledWhere = [];
+
+  foreach ($where as $k => $v) {
+    if ($v === null) {
+      $compiledWhere[] = $db->quoteIdent($k) . ' is null';
+    } else {
+      $compiledWhere[] = $db->quoteIdent($k) . '=' . $db->quote($v);
+    }
+  }
+
+  return 'select * from ' . $db->quoteIdent($table) . ' where ' . implode(' and ', $compiledWhere);
+}

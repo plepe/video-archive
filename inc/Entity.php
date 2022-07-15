@@ -224,15 +224,12 @@ class Entity {
       if (array_key_exists($elem['id'], Entity::$cache)) {
         $entity = Entity::$cache[$elem['id']];
       }
+      elseif (!is_subclass_of($elem['type'], 'Entity')) {
+        throw new Exception("{$elem['type']} is not a derivative of Entity");
+      }
       else {
-        switch ($elem['type']) {
-          case 'Video':
-            $entity = new Video($elem['id'], $elem);
-            break;
-          case 'Playlist':
-            $entity = new Playlist($elem['id'], $elem);
-            break;
-        }
+        $class = $elem['type'];
+        $entity = new $class($elem['id'], $elem);
       }
 
       Entity::$cache[$elem['id']] = $entity;
@@ -259,15 +256,12 @@ class Entity {
     if (sizeof($res)) {
       $elem = $res[0];
 
-      switch ($elem['type']) {
-        case 'Video':
-          $entity = new Video($elem['id'], $elem);
-          break;
-        case 'Playlist':
-          $entity = new Playlist($elem['id'], $elem);
-          break;
-        default:
-          throw new Exception('Invalid entity type');
+      if (!is_subclass_of($elem['type'], 'Entity')) {
+        throw new Exception("{$elem['type']} is not a derivative of Entity");
+      }
+      else {
+        $class = $elem['type'];
+        $entity = new $class($elem['id'], $elem);
       }
 
       Entity::$cache[$elem['id']] = $entity;

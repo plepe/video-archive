@@ -12,16 +12,14 @@ class Video extends Entity {
   }
 
   function formEdit () {
-    return [
-      'title'   => [
-        'type'    => 'text',
-        'name'    => 'Title',
-      ],
+    $result = parent::formEdit();
+
+    return array_merge($result, [
       'date'    => [
         'type'    => 'datetime',
         'name'    => 'Date',
       ],
-    ];
+    ]);
   }
 
   function fileName ($fileId, $options = []) {

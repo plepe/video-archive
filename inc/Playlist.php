@@ -131,22 +131,20 @@ class Playlist extends Entity {
   }
 
   function formEdit () {
+    $result = parent::formEdit();
+
     $video_list = [];
     foreach (Video::list() as $video) {
       $video_list[$video->id] = $video->data['title'];
     }
 
-    return [
-      'title'   => [
-        'type'    => 'text',
-        'name'    => 'Title',
-      ],
+    return array_merge($result, [
       'videos'    => [
         'type'    => 'autocomplete',
         'name'    => 'List of Videos',
         'count'   => ['default' => 1, 'index_type' => 'array'],
         'values'  => $video_list,
       ],
-    ];
+    ]);
   }
 }

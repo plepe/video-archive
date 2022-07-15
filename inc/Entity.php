@@ -16,6 +16,15 @@ class Entity {
     $this->isLoaded = false;
   }
 
+  function formEdit () {
+    return [
+      'title'   => [
+        'type'    => 'text',
+        'name'    => 'Title',
+      ],
+    ];
+  }
+
   function load () {
     global $db;
 

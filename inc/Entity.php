@@ -106,6 +106,20 @@ class Entity {
       }
     }
 
+    if (array_key_exists('access', $data)) {
+      $db->query(dbCompileRemove('entity_access', ['id' => $this->id]));
+      foreach ($data['access'] as $user => $access) {
+        $db->query(dbCompileInsert('entity_access', [
+          'user' => $user,
+          'id' => $this->id,
+          'access_view' => $access['view'],
+          'access_list' => $access['list'],
+          'access_update' => $access['update'],
+          'access_delete' => $access['delete'],
+        ]));
+      }
+    }
+
     return true;
   }
 

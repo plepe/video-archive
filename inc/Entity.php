@@ -22,6 +22,15 @@ class Entity {
         'type'    => 'text',
         'name'    => 'Title',
       ],
+      'access_anonymous' => [
+        'type' => 'select',
+        'name' => 'Anonymous Access',
+        'values' => [
+          'default' => 'default',
+          'private' => 'private',
+          'public' => 'public',
+        ],
+      ],
     ];
   }
 
@@ -57,11 +66,42 @@ class Entity {
   function dataPreEdit () {
     $result = $this->data;
 
+    $result['access_anonymous'] = 'default';
+    if (array_key_exists('', $this->data['access'])) {
+      $access = $this->data['access'][''];
+      if ($access['view'] === false || $access['list'] === false) {
+        $result['access_anonymous'] = 'private';
+      }
+      else if ($access['view'] === true || $access['list'] === true) {
+        $result['access_anonymous'] = 'public';
+      }
+      else {
+        $result['access_anonymous'] = null;
+      }
+    }
+
     return $result;
   }
 
   function dataPostEdit ($data) {
     $result = $data;
+
+    if (array_key_exists('access_anonymous', $data)) {
+      switch ($data['access_anonymous']) {
+        case 'private':
+          $result['access'][''] = [ 'view' => false, 'list' => false, 'update' => false, 'delete' => false ];
+          break;
+        case 'public':
+          $result['access'][''] = [ 'view' => true, 'list' => true, 'update' => null, 'delete' => null ];
+          break;
+        case 'default':
+          unset($result['access']['']);
+          break;
+        default:
+      }
+
+      unset($result['access_anonymous']);
+    }
 
     return $result;
   }

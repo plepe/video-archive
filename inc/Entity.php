@@ -54,6 +54,18 @@ class Entity {
     $this->isLoaded = true;
   }
 
+  function dataPreEdit () {
+    $result = $this->data;
+
+    return $result;
+  }
+
+  function dataPostEdit ($data) {
+    $result = $data;
+
+    return $result;
+  }
+
   function save ($data, $changeset) {
     global $db;
 

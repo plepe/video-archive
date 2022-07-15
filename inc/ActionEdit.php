@@ -43,7 +43,8 @@ class ActionEdit {
 
     $form = new form('data', $this->entity->formEdit());
 
-    $data = $this->entity->data;
+    $data = $this->entity->dataPreEdit();
+
     $data['file'] = [
       'name' => 'video.mp4',
       'type' => 'video/mp4',
@@ -57,6 +58,8 @@ class ActionEdit {
     if ($form->is_complete()) {
       mkdir("{$data_dir}/{$this->entity->id}");
       $data = $form->save_data();
+      $data = array_merge($this->entity->data, $data);
+      $data = $this->entity->dataPostEdit($data);
 
       $changeset = new Changeset('edit video');
 

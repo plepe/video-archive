@@ -27,6 +27,17 @@ class Entity {
     $res = $qry->fetchAll();
     $this->data = array_merge($this->data, $res[0]);
 
+    $qry = $db->query(dbCompileSelect('entity_access', [ 'id' => $this->id ]));
+    $this->data['access'] = [];
+    while ($elem = $qry->fetch()) {
+      $this->data['access'][$elem['user']] = [
+        'view' => to_bool($elem['access_view']),
+        'list' => to_bool($elem['access_list']),
+        'update' => to_bool($elem['access_update']),
+        'delete' => to_bool($elem['access_delete']),
+      ];
+    }
+
     if (method_exists($this, '_load')) {
       $this->_load();
     }

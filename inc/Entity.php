@@ -180,6 +180,15 @@ class Entity {
     $default_overrides = [];
     $userId = $auth->current_user()->id();
 
+    if (get_class($this) !== 'Share' && array_key_exists('share', $_REQUEST)) {
+      $share = Share::get($_REQUEST['share']);
+      if (!$this->isPartOf($share)) {
+        return false;
+      }
+
+      return $share->access($type);
+    }
+
     $res = $db->query('select * from entity_access where id=' . $db->quote($this->id) . ' and ' . $db->quoteIdent("access_{$type}") . '=true');
     while ($elem = $res->fetch()) {
       if ($auth->access($elem['user'])) {
@@ -203,6 +212,38 @@ class Entity {
     global $default_access;
     foreach ($default_access as $user => $rights) {
       if (in_array($type, $rights) && $auth->access($user) && !in_array($user, $default_overrides)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  function references () {
+    global $db;
+
+    $qry = $db->query(dbCompileSelect('playlist_video', [ 'video_id' => $this->id ]));
+    $result = [];
+    while ($elem = $qry->fetch()) {
+      $result[] = $elem['playlist_id'];
+    }
+
+    $qry = $db->query(dbCompileSelect('share', [ 'reference' => $this->id ]));
+    while ($elem = $qry->fetch()) {
+      $result[] = $elem['id'];
+    }
+
+    return $result;
+  }
+
+  function isPartOf ($entity) {
+    $references = $this->references();
+    if (in_array($entity->id, $references)) {
+      return true;
+    }
+
+    foreach ($references as $ref) {
+      if (Entity::get($ref)->isPartOf($entity)) {
         return true;
       }
     }

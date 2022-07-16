@@ -20,6 +20,10 @@ class Share extends Entity {
     $this->data = array_merge($this->data, $res[0]);
   }
 
+  function showTeaser ($options = []) {
+    return '';
+  }
+
   function showFull ($options = []) {
     $entity = Entity::get($this->data['reference']);
 

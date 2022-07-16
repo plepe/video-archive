@@ -55,7 +55,11 @@ class Video extends Entity {
   function showFull ($options = []) {
     $result  = "<div id=\"{$this->id}\">\n";
 
-    $url = [ 'id' => $this->id, 'file' => 'video' ];
+    $url = $options['additionalUrlParameters'] ?? [];
+    $url = array_merge($url, [ 'id' => $this->id, 'file' => 'video' ]);
+    if (array_key_exists('share', $_REQUEST)) {
+      $url['share'] = $_REQUEST['share'];
+    }
     $url = url($url, 'download.php');
 
     $result .= "<div class=\"videoContainer\"><video class='video-js' data-setup='{}' controls><source type=\"video/mp4\" src=\"{$url}\"></video></div>\n";
@@ -65,7 +69,9 @@ class Video extends Entity {
       $result .= '<div class="playlist">';
       $playlist = Entity::get($options['playlist']);
       if ($playlist) {
-        $result .= $playlist->showFull([ 'current' => $this->id ]);
+        $playlistOptions = $options;
+        $playlistOptions['current'] = $this->id;
+        $result .= $playlist->showFull($playlistOptions);
       }
       $result .= '</div>';
     }

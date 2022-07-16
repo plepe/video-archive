@@ -27,6 +27,7 @@ class Share extends Entity {
   function showFull ($options = []) {
     $entity = Entity::get($this->data['reference']);
 
+    $options['additionalUrlParameters'] = [ 'share' => $this->id ];
     return $entity->showFull($options);
   }
 }

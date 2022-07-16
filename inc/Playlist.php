@@ -68,7 +68,12 @@ class Playlist extends Entity {
     $result .= '<div class="playlist-content">';
 
     $memberOptions = $options;
-    $memberOptions['additionalUrlParameters'] = [ 'playlist' => $this->id ];
+    if (array_key_exists('additionalUrlParameters', $memberOptions)) {
+      $memberOptions['additionalUrlParameters']['playlist'] = $this->id;
+    }
+    else {
+      $memberOptions['additionalUrlParameters'] = [ 'playlist' => $this->id ];
+    }
 
     foreach ($this->data['videos'] as $memberId) {
       $member = Entity::get($memberId);

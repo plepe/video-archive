@@ -11,7 +11,8 @@ function process_queue_next () {
   }
 
   $proc_id = $elem['proc_id'];
-  $db->query('update process_queue set start=now() where proc_id=' . $db->quote($proc_id));
+  $now = (new DateTime())->format('Y-m-d H:i:s');
+  $db->query(dbCompileUpdate('process_queue', [ 'start' => $now ], [ 'proc_id' => $proc_id ]));
   print "Process {$proc_id} ...";
 
   $changeset = new Changeset('process queue');
@@ -19,7 +20,8 @@ function process_queue_next () {
   $entity = Entity::get($elem['id']);
   $result = call_user_func([$entity, 'process' . $elem['func']], json_decode($elem['options'], 1), $changeset);
 
-  $db->query('update process_queue set end=now(), result=' . $db->quote(json_encode($result)) . ' where proc_id=' . $db->quote($proc_id));
+  $now = (new DateTime())->format('Y-m-d H:i:s');
+  $db->query(dbCompileUpdate('process_queue', [ 'end' => $now, 'result' => json_encode($result) ], [ 'proc_id' => $proc_id ]));
   $changeset->commit();
   print " done!\n";
 

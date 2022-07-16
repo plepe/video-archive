@@ -54,7 +54,11 @@ class Video extends Entity {
 
   function showFull ($options = []) {
     $result  = "<div id=\"{$this->id}\">\n";
-    $result .= "<div class=\"videoContainer\"><video class='video-js' data-setup='{}' controls><source type=\"video/mp4\" src=\"download.php?id={$this->id}&amp;file=video\"></video></div>\n";
+
+    $url = [ 'id' => $this->id, 'file' => 'video' ];
+    $url = url($url, 'download.php');
+
+    $result .= "<div class=\"videoContainer\"><video class='video-js' data-setup='{}' controls><source type=\"video/mp4\" src=\"{$url}\"></video></div>\n";
     $result .= "<div class=\"title\">{$this->data['title']}</div>\n";
 
     if (array_key_exists('playlist', $options)) {

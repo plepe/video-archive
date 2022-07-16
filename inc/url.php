@@ -1,5 +1,5 @@
 <?php
-function url ($options) {
+function url ($options, $file = '') {
   if (is_string($options)) {
     return $options;
   }
@@ -8,5 +8,5 @@ function url ($options) {
     return '.';
   }
 
-  return '?' . http_build_query($options);
+  return $file . '?' . http_build_query($options);
 }

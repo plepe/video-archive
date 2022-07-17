@@ -27,6 +27,7 @@
     "watchify": "^4.0.0"
   },
   "dependencies": {
+    "qs": "^6.11.0",
     "video.js": "^7.19.2"
   }
 }

@@ -61,7 +61,9 @@ if (method_exists($action, 'menu')) {
 <body class="action-<?=$actionId?>">
 <?php
 print messages_print();
+print '<div id="content">';
 print $content;
+print '</div>';
 ?>
 
 <div id='main-menu'>

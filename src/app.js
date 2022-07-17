@@ -2,6 +2,9 @@ const VideoJS = require('video.js')
 const state = require('./state')
 const updateLinks = require('./updateLinks')
 
+// Entities:
+require('./Video')
+
 const Actions = {
   show: require('./ActionShow')
 }
@@ -17,10 +20,15 @@ function newPage (data) {
 
   if (data.action in Actions) {
     const action = new Actions[data.action](data)
-    const text = action.show()
+    action.load((err) => {
+      if (err) { return global.alert(err) }
 
-    const content = document.getElementById('content')
-    content.innerHTML = text
+      const text = action.show()
+
+      const content = document.getElementById('content')
+      content.innerHTML = text
+    })
+
     return true
   }
 

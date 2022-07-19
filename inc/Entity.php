@@ -125,7 +125,7 @@ class Entity {
 
     if ($this->isNew) {
       $entityFields['id'] = $this->id;
-      $entityFields['type'] = get_class($this);
+      $entityFields['class'] = get_class($this);
       $entityFields['author'] = 'test';
 
       $db->query(dbCompileInsert('entity', $entityFields));
@@ -265,11 +265,11 @@ class Entity {
       if (array_key_exists($elem['id'], Entity::$cache)) {
         $entity = Entity::$cache[$elem['id']];
       }
-      elseif (!is_subclass_of($elem['type'], 'Entity')) {
-        throw new Exception("{$elem['type']} is not a derivative of Entity");
+      elseif (!is_subclass_of($elem['class'], 'Entity')) {
+        throw new Exception("{$elem['class']} is not a derivative of Entity");
       }
       else {
-        $class = $elem['type'];
+        $class = $elem['class'];
         $entity = new $class($elem['id'], $elem);
       }
 
@@ -297,11 +297,11 @@ class Entity {
     if (sizeof($res)) {
       $elem = $res[0];
 
-      if (!is_subclass_of($elem['type'], 'Entity')) {
-        throw new Exception("{$elem['type']} is not a derivative of Entity");
+      if (!is_subclass_of($elem['class'], 'Entity')) {
+        throw new Exception("{$elem['class']} is not a derivative of Entity");
       }
       else {
-        $class = $elem['type'];
+        $class = $elem['class'];
         $entity = new $class($elem['id'], $elem);
       }
 

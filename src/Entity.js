@@ -17,7 +17,7 @@ Entity.get = function (id, callback) {
   fetch('api.php?id=' + id)
     .then(res => res.json())
     .then(data => {
-      const entity = new Entity.classes[data.type](id, data)
+      const entity = new Entity.classes[data.class](id, data)
 
       cache[id] = entity
 

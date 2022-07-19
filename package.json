@@ -7,8 +7,8 @@
     "lib": "lib"
   },
   "scripts": {
-    "build": "browserify src/app.js -o dist/app.js",
-    "watch": "watchify --debug src/app.js -o dist/app.js -v",
+    "build": "browserify src/js/app.js -o dist/app.js",
+    "watch": "watchify --debug src/js/app.js -o dist/app.js -v",
     "prepare": "mkdir -p dist && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

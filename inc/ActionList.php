@@ -23,8 +23,8 @@ class ActionList {
         'text' => 'Upload Video',
       ];
       $result[] = [
-        'url' => "?action=newPlaylist",
-        'text' => 'Create Playlist',
+        'url' => "?action=newCollection",
+        'text' => 'Create Collection',
       ];
     }
 

@@ -65,13 +65,13 @@ class Video extends Entity {
     $result .= "<div class=\"videoContainer\"><video class='video-js' data-setup='{}' controls><source type=\"video/mp4\" src=\"{$url}\"></video></div>\n";
     $result .= "<div class=\"title\">{$this->data['title']}</div>\n";
 
-    if (array_key_exists('playlist', $options)) {
-      $result .= '<div class="playlist">';
-      $playlist = Entity::get($options['playlist']);
-      if ($playlist) {
-        $playlistOptions = $options;
-        $playlistOptions['current'] = $this->id;
-        $result .= $playlist->showFull($playlistOptions);
+    if (array_key_exists('collection', $options)) {
+      $result .= '<div class="collection">';
+      $collection = Entity::get($options['collection']);
+      if ($collection) {
+        $collectionOptions = $options;
+        $collectionOptions['current'] = $this->id;
+        $result .= $collection->showFull($collectionOptions);
       }
       $result .= '</div>';
     }

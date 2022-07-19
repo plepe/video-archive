@@ -27,20 +27,20 @@ create table if not exists share (
   primary key(id)
 );
 
-create table if not exists playlist (
+create table if not exists collection (
   id            char(16)        not null,
   title         tinytext        not null,
   foreign key(id) references entity(id) on update cascade on delete cascade,
   primary key(id)
 );
 
-create table if not exists playlist_video (
-  video_id      char(16)        not null,
-  playlist_id   char(16)        not null,
+create table if not exists collection_member (
+  collection_id   char(16)        not null,
+  member_id      char(16)        not null,
   weight        int             not null        default 0,
-  foreign key(video_id) references video(id) on update cascade on delete cascade,
-  foreign key(playlist_id) references playlist(id) on update cascade on delete cascade,
-  primary key(video_id, playlist_id)
+  foreign key(member_id) references entity(id) on update cascade on delete cascade,
+  foreign key(collection_id) references collection(id) on update cascade on delete cascade,
+  primary key(collection_id, member_id)
 );
 
 create table if not exists entity_access (

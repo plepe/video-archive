@@ -1,18 +1,18 @@
 <?php
-class Playlist extends Entity {
+class Collection extends Entity {
   public static $dbFields = ['title'];
-  public static $dbTable = 'playlist';
+  public static $dbTable = 'collection';
 
   function _load () {
     global $db;
 
-    $qry = $db->query('select * from playlist where id=' . $db->quote($this->id));
+    $qry = $db->query('select * from collection where id=' . $db->quote($this->id));
     $res = $qry->fetchAll();
     $this->data = array_merge($this->data, $res[0]);
 
-    $qry = $db->query('select video_id from playlist_video where playlist_id=' . $db->quote($this->id) . ' order by weight asc');
-    $this->data['videos'] = array_map(function ($elem) {
-      return $elem['video_id'];
+    $qry = $db->query('select member_id from collection_member where collection_id=' . $db->quote($this->id) . ' order by weight asc');
+    $this->data['members'] = array_map(function ($elem) {
+      return $elem['member_id'];
     }, $qry->fetchAll());
   }
 
@@ -21,12 +21,12 @@ class Playlist extends Entity {
 
     parent::save($data, $changeset);
 
-    $db->query(dbCompileRemove('playlist_video', ['playlist_id' => $this->id]));
+    $db->query(dbCompileRemove('collection_member', ['collection_id' => $this->id]));
     $res->closeCursor();
 
-    foreach ($data['videos'] as $index => $id) {
-      $res = $db->query(dbCompileInsert('playlist_video',
-        ['playlist_id' => $this->id, 'video_id' => $id, 'weight' => $index]
+    foreach ($data['members'] as $index => $id) {
+      $res = $db->query(dbCompileInsert('collection_member',
+        ['collection_id' => $this->id, 'member_id' => $id, 'weight' => $index]
       ));
       $res->closeCursor();
 
@@ -37,7 +37,7 @@ class Playlist extends Entity {
 
   function remove () {
     global $db;
-    $db->query(dbCompileRemove('playlist_video', ['playlist_id' => $this->id]));
+    $db->query(dbCompileRemove('collection_member', ['collection_id' => $this->id]));
     return parent::remove();
   }
 
@@ -65,17 +65,17 @@ class Playlist extends Entity {
 
   function showFull ($options = []) {
     $result  = "<div id=\"{$this->id}\">\n";
-    $result .= '<div class="playlist-content">';
+    $result .= '<div class="collection-content">';
 
     $memberOptions = $options;
     if (array_key_exists('additionalUrlParameters', $memberOptions)) {
-      $memberOptions['additionalUrlParameters']['playlist'] = $this->id;
+      $memberOptions['additionalUrlParameters']['collection'] = $this->id;
     }
     else {
-      $memberOptions['additionalUrlParameters'] = [ 'playlist' => $this->id ];
+      $memberOptions['additionalUrlParameters'] = [ 'collection' => $this->id ];
     }
 
-    foreach ($this->data['videos'] as $memberId) {
+    foreach ($this->data['members'] as $memberId) {
       $member = Entity::get($memberId);
       $result .= $member->showTeaser($memberOptions);
     }
@@ -138,17 +138,17 @@ class Playlist extends Entity {
   function formEdit () {
     $result = parent::formEdit();
 
-    $video_list = [];
-    foreach (Video::list() as $video) {
-      $video_list[$video->id] = $video->data['title'];
+    $entity_list = [];
+    foreach (Entity::list() as $entity) {
+      $entity_list[$entity->id] = $entity->data['title'];
     }
 
     return array_merge($result, [
-      'videos'    => [
+      'members'    => [
         'type'    => 'autocomplete',
         'name'    => 'List of Videos',
         'count'   => ['default' => 1, 'index_type' => 'array'],
-        'values'  => $video_list,
+        'values'  => $entity_list,
       ],
     ]);
   }

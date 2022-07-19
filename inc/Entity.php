@@ -222,10 +222,10 @@ class Entity {
   function references () {
     global $db;
 
-    $qry = $db->query(dbCompileSelect('playlist_video', [ 'video_id' => $this->id ]));
+    $qry = $db->query(dbCompileSelect('collection_member', [ 'member_id' => $this->id ]));
     $result = [];
     while ($elem = $qry->fetch()) {
-      $result[] = $elem['playlist_id'];
+      $result[] = $elem['collection_id'];
     }
 
     $qry = $db->query(dbCompileSelect('share', [ 'reference' => $this->id ]));

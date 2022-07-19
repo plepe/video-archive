@@ -1,21 +1,21 @@
 <?php
-class ActionNewPlaylist {
+class ActionNewCollection {
   function access () {
     return default_access('create');
   }
 
   function show () {
     global $data_dir;
-    $playlist = new Playlist();
+    $collection = new Collection();
 
-    $form = new form('data', $playlist->formEdit());
+    $form = new form('data', $collection->formEdit());
 
     if ($form->is_complete()) {
       $data = $form->save_data();
 
-      $changeset = new Changeset('new playlist');
+      $changeset = new Changeset('new collection');
       $changeset->open();
-      $result = $playlist->save($data, $changeset);
+      $result = $collection->save($data, $changeset);
       $changeset->commit();
 
       if ($result) {

@@ -1,7 +1,6 @@
-const Action = require('./Action')
 const Entity = require('./Entity')
 
-module.exports = class Action {
+class Action {
   constructor (params) {
     this.params = params
     if (params.id) {
@@ -25,3 +24,6 @@ module.exports = class Action {
   show () {
   }
 }
+
+Action.classes = {}
+module.exports = Action

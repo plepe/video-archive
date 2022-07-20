@@ -1,7 +1,9 @@
 const Action = require('./Action')
 
-module.exports = class ActionShow extends Action {
+class ActionView extends Action {
   show () {
     return this.entity.showFull(this.params)
   }
 }
+
+Action.classes.view = ActionView

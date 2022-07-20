@@ -4,6 +4,8 @@ const app = express()
 const port = 3000
 
 const database = require('./src/database')
+const Entity = require('./src/Entity')
+require('./src/Video')
 
 const config = JSON.parse(fs.readFileSync('conf.json'))
 database.init(config)
@@ -18,15 +20,12 @@ app.get('/', (req, res) => {
 })
 
 app.get('/view/:id', (req, res) => {
-  database.query('select * from entity where id=?', [ req.params.id ],
-    (err, result) => {
-      if (err) {
-        console.error(err)
-      }
-
-      res.render('index', { message: JSON.stringify(result) })
-    })
-
+  Entity.get(req.params.id,
+    (err, entity) => {
+      if (err) { return console.error(err) }
+      res.render('index', { message: JSON.stringify(entity.data) })
+    }
+  )
 })
 
 app.use('/static', express.static('static'))

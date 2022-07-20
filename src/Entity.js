@@ -1,3 +1,4 @@
+const entityLoad = require('./entityLoad')
 const cache = {}
 
 class Entity {
@@ -14,15 +15,13 @@ Entity.get = function (id, callback) {
     return callback(null, cache[id])
   }
 
-  fetch('api.php?id=' + id)
-    .then(res => res.json())
-    .then(data => {
-      const entity = new Entity.classes[data.class](id, data)
+  entityLoad(id, (err, data) => {
+    const entity = new Entity.classes[data.class](id, data)
 
-      cache[id] = entity
+    cache[id] = entity
 
-      callback(null, entity)
-    })
+    callback(null, entity)
+  })
 }
 
 module.exports = Entity

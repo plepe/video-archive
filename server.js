@@ -11,6 +11,10 @@ app.get('/', (req, res) => {
   })
 })
 
+app.use('/static', express.static('static'))
+app.use('/node_modules', express.static('node_modules'))
+app.use('/dist', express.static('dist'))
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })

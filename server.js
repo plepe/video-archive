@@ -1,6 +1,9 @@
+const fs = require('fs')
 const express = require('express')
 const app = express()
 const port = 3000
+
+const config = JSON.parse(fs.readFileSync('conf.json'))
 
 app.set('views', __dirname + '/views')
 app.set('view engine', 'twig')

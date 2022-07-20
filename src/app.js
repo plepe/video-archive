@@ -4,10 +4,6 @@ const updateLinks = require('./updateLinks')
 const Entity = require('./Entity')
 require('./entities')
 
-const Actions = {
-  show: require('./ActionShow')
-}
-
 function newPage (data) {
   if (!('action' in data)) {
     if ('id' in data) {

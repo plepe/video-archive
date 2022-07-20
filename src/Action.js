@@ -25,5 +25,10 @@ class Action {
   }
 }
 
+Action.get = function (id, params, callback) {
+  const action = new Action.classes[id](params)
+  action.load((err) => callback(err, action))
+}
+
 Action.classes = {}
 module.exports = Action

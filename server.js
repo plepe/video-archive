@@ -4,7 +4,7 @@ const app = express()
 const port = 3000
 
 const database = require('./src/database')
-const Entity = require('./src/Entity')
+const Action = require('./src/Action')
 require('./src/entities')
 
 const config = JSON.parse(fs.readFileSync('conf.json'))
@@ -20,16 +20,23 @@ app.get('/', (req, res) => {
 })
 
 app.get('/view/:id', (req, res) => {
-  Entity.get(req.params.id,
-    (err, entity) => {
-      if (err) { return console.error(err) }
+  const params = req.query
+  params.id = req.params.id
 
-      if (req.headers['content-type']) {
-        res.setHeader('Content-Type', 'application/json');
-        res.send(JSON.stringify(entity.data, null, 2))
-      } else {
-        res.render('index', { message: JSON.stringify(entity.data) })
-      }
+  Action.get('view', params,
+    (err, action) => {
+      action.show(req.params, req.query,
+        (err, result) => {
+          if (err) { return console.error(err) }
+
+          if (req.headers['content-type']) {
+            res.setHeader('Content-Type', 'application/json');
+            res.send(JSON.stringify(entity.data, null, 2))
+          } else {
+            res.render('index', result)
+          }
+        }
+      )
     }
   )
 })

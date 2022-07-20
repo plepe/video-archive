@@ -2,8 +2,13 @@ const express = require('express')
 const app = express()
 const port = 3000
 
+app.set('views', __dirname + '/views')
+app.set('view engine', 'twig')
+
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.render('index', {
+    message: 'Hello World!'
+  })
 })
 
 app.listen(port, () => {

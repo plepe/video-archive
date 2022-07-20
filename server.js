@@ -23,7 +23,13 @@ app.get('/view/:id', (req, res) => {
   Entity.get(req.params.id,
     (err, entity) => {
       if (err) { return console.error(err) }
-      res.render('index', { message: JSON.stringify(entity.data) })
+
+      if (req.headers['content-type']) {
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify(entity.data, null, 2))
+      } else {
+        res.render('index', { message: JSON.stringify(entity.data) })
+      }
     }
   )
 })

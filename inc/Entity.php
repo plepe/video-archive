@@ -223,17 +223,14 @@ class Entity {
     global $db;
 
     $qry = $db->query(dbCompileSelect('playlist_video', [ 'video_id' => $this->id ]));
-    $result = [];
     while ($elem = $qry->fetch()) {
-      $result[] = $elem['playlist_id'];
+      yield $elem['playlist_id'];
     }
 
     $qry = $db->query(dbCompileSelect('share', [ 'reference' => $this->id ]));
     while ($elem = $qry->fetch()) {
-      $result[] = $elem['id'];
+      yield $elem['id'];
     }
-
-    return $result;
   }
 
   function isPartOf ($entity) {

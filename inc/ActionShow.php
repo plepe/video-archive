@@ -38,6 +38,10 @@ class ActionShow {
         'url' => [ 'reference' => $this->id, 'action' => 'newShare' ],
         'text' => 'create share',
       ];
+      $result[] = [
+        'url' => [ 'id' => $this->id, 'action' => 'sharing' ],
+        'text' => 'Sharing',
+      ];
     }
 
     return $result;

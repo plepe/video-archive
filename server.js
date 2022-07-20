@@ -11,6 +11,12 @@ app.get('/', (req, res) => {
   })
 })
 
+app.get('/view/:id', (req, res) => {
+  res.render('index', {
+    message: 'params: ' + JSON.stringify(req.params) + ' query: ' + JSON.stringify(req.query)
+  })
+})
+
 app.use('/static', express.static('static'))
 app.use('/node_modules', express.static('node_modules'))
 app.use('/dist', express.static('dist'))

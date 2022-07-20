@@ -5,7 +5,7 @@ const port = 3000
 
 const database = require('./src/database')
 const Entity = require('./src/Entity')
-require('./src/Video')
+require('./src/entities')
 
 const config = JSON.parse(fs.readFileSync('conf.json'))
 database.init(config)

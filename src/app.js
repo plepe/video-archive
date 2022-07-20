@@ -1,9 +1,8 @@
 const VideoJS = require('video.js')
 const state = require('./state')
 const updateLinks = require('./updateLinks')
-
-// Entities:
-require('./Video')
+const Entity = require('./Entity')
+require('./entities')
 
 const Actions = {
   show: require('./ActionShow')

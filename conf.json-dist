@@ -1,3 +1,4 @@
 {
+  "db": "mysql://user:password@localhost/test",
   "data_dir": "data"
 }

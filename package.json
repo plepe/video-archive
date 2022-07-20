@@ -13,6 +13,9 @@
     "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "browser": {
+    "./src/entityLoad.js": "./src/entityLoadBrowser.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/plepe/video-archive.git"

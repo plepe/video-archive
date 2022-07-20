@@ -7,6 +7,10 @@ class ActionView extends Action {
       (err, entity) => {
         if (err) { return callback(err) }
 
+        if (!entity) {
+          return callback(null, null)
+        }
+
         callback(null, {
           content: this.entity.showFull(params)
         })

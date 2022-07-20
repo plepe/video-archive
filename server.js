@@ -27,7 +27,15 @@ app.get('/view/:id', (req, res) => {
     (err, action) => {
       action.show(req.params, req.query,
         (err, result) => {
-          if (err) { return console.error(err) }
+          if (err) {
+            res.status(500).send('Server Error')
+            return console.error(err)
+          }
+
+          if (!result) {
+            res.status(404).send('Entity not found')
+            return
+          }
 
           if (req.headers['content-type']) {
             res.setHeader('Content-Type', 'application/json');

@@ -16,6 +16,14 @@ Entity.get = function (id, callback) {
   }
 
   entityLoad(id, (err, data) => {
+    if (!data) {
+      return callback(null, null)
+    }
+
+    if (!(data.class in Entity.classes)) {
+      return callback(new Error('Invalid entity class ' + data.class))
+    }
+
     const entity = new Entity.classes[data.class](id, data)
 
     cache[id] = entity

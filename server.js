@@ -4,6 +4,7 @@ const app = express()
 const port = 3000
 
 const database = require('./src/database')
+const Entity = require('./src/Entity')
 const Action = require('./src/Action')
 require('./src/entities')
 
@@ -43,6 +44,36 @@ app.get('/view/:id', (req, res) => {
           } else {
             res.render('index', result)
           }
+        }
+      )
+    }
+  )
+})
+
+app.get('/data/:id', (req, res) => {
+  Entity.get(req.params.id,
+    (err, entity) => {
+      if (err) {
+        res.status(500).send('Server Error')
+        return console.error(err)
+      }
+
+      if (!entity) {
+        res.status(404).send('Entity not found')
+        return
+      }
+
+      const file = entity.getFile(req.query,
+        (err, result) => {
+          if (!result) {
+            res.status(404).send('File not found')
+            return
+          }
+
+          res.setHeader('Content-Type', result.mime)
+
+          const stream = fs.createReadStream(config.data_dir + '/' + result.path + '/' + result.filename)
+          stream.pipe(res)
         }
       )
     }

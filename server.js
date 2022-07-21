@@ -40,7 +40,7 @@ app.get('/view/:id', (req, res) => {
 
           if (req.headers['content-type']) {
             res.setHeader('Content-Type', 'application/json');
-            res.send(JSON.stringify(entity.data, null, 2))
+            res.send(JSON.stringify(action.entity.data, null, 2))
           } else {
             res.render('index', result)
           }

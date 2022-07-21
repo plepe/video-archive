@@ -71,9 +71,16 @@ app.get('/data/:id', (req, res) => {
           }
 
           res.setHeader('Content-Type', result.mime)
+          const file = config.data_dir + '/' + result.path + '/' + result.filename
+          fs.stat(file,
+            (err, stat) => {
+              res.setHeader('Content-Length', stat.size)
+              res.setHeader('Last-Modified', stat.mtime)
 
-          const stream = fs.createReadStream(config.data_dir + '/' + result.path + '/' + result.filename)
-          stream.pipe(res)
+              const stream = fs.createReadStream(file)
+              stream.pipe(res)
+            }
+          )
         }
       )
     }

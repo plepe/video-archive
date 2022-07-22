@@ -13,17 +13,20 @@ const entityDataDef = {
   }
 }
 
-module.exports = function entityLoad (id, callback) {
-  database.query('select * from entity where id=?', [ id ],
-  (err, result) => {
-    if (err) { return callback(err) }
+module.exports = {
+  get (id, callback) {
+    database.query('select * from entity where id=?', [ id ],
+      (err, result) => {
+        if (err) { return callback(err) }
 
-    if (!result.length) {
-      return callback(null, null)
-    }
+        if (!result.length) {
+          return callback(null, null)
+        }
 
-    loadEntityProperties(result[0], callback)
-  })
+        loadEntityProperties(result[0], callback)
+      }
+    )
+  }
 }
 
 function loadEntityProperties (data, callback) {

@@ -15,7 +15,7 @@ Entity.get = function (id, callback) {
     return callback(null, cache[id])
   }
 
-  entityLoad(id, (err, data) => {
+  entityLoad.get(id, (err, data) => {
     if (!data) {
       return callback(null, null)
     }

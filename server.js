@@ -30,9 +30,25 @@ app.get('/', (req, res) => {
     return
   }
 
-  res.render('index', {
-    message: 'Hello World!'
-  })
+  Action.get('list', req.params,
+    (err, action) => {
+      if (err) {
+        res.status(500).send('Server Error')
+        return console.error(err)
+      }
+
+      action.show(req.params, req.query,
+        (err, result) => {
+          if (err) {
+            res.status(500).send('Server Error')
+            return console.error(err)
+          }
+
+          res.render('index', result)
+        }
+      )
+    }
+  )
 })
 
 app.get('/ids', (req, res) => {

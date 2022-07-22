@@ -26,6 +26,10 @@ class Action {
 }
 
 Action.get = function (id, params, callback) {
+  if (!(id in Action.classes)) {
+    return callback(new Error('No such action ' + id))
+  }
+
   const action = new Action.classes[id](params)
   action.load((err) => callback(err, action))
 }

@@ -7,6 +7,7 @@ const database = require('./src/database')
 const Entity = require('./src/Entity')
 const Action = require('./src/Action')
 const entityLoad = require('./src/entityLoad')
+const render = require('./src/render')
 require('./src/entities')
 
 const config = JSON.parse(fs.readFileSync('conf.json'))
@@ -30,25 +31,17 @@ app.get('/', (req, res) => {
     return
   }
 
-  Action.get('list', req.params,
-    (err, action) => {
-      if (err) {
-        res.status(500).send('Server Error')
-        return console.error(err)
-      }
+  const params = req.params
+  params.action = 'list'
 
-      action.show(req.params, req.query,
-        (err, result) => {
-          if (err) {
-            res.status(500).send('Server Error')
-            return console.error(err)
-          }
-
-          res.render('index', result)
-        }
-      )
+  render(params, (err, result) => {
+    if (err) {
+      res.status(500).send('Server Error')
+      return console.error(err)
     }
-  )
+
+    res.render('index', result)
+  })
 })
 
 app.get('/ids', (req, res) => {
@@ -71,33 +64,38 @@ app.get('/ids', (req, res) => {
 })
 
 app.get('/view/:id', (req, res) => {
+  if (req.headers['content-type'] && req.headers['content-type'] === 'application/json') {
+    res.setHeader('Content-Type', 'application/json');
+
+    Entity.get(req.params.id, (err, result) => {
+      if (err) {
+        res.status(500).send('Server Error')
+        return console.error(err)
+      }
+
+      res.send(JSON.stringify(result.data, null, 2))
+    })
+
+    return
+  }
+
   const params = req.query
   params.id = req.params.id
+  params.action = 'view'
 
-  Action.get('view', params,
-    (err, action) => {
-      action.show(req.params, req.query,
-        (err, result) => {
-          if (err) {
-            res.status(500).send('Server Error')
-            return console.error(err)
-          }
-
-          if (!result) {
-            res.status(404).send('Entity not found')
-            return
-          }
-
-          if (req.headers['content-type']) {
-            res.setHeader('Content-Type', 'application/json');
-            res.send(JSON.stringify(action.entity.data, null, 2))
-          } else {
-            res.render('index', result)
-          }
-        }
-      )
+  render(params, (err, result) => {
+    if (err) {
+      res.status(500).send('Server Error')
+      return console.error(err)
     }
-  )
+
+    if (!result) {
+      res.status(404).send('Entity not found')
+      return
+    }
+
+    res.render('index', result)
+  })
 })
 
 app.get('/data/:id', (req, res) => {

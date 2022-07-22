@@ -3,6 +3,7 @@ const state = require('./state')
 const updateLinks = require('./updateLinks')
 const Entity = require('./Entity')
 const Action = require('./Action')
+const render = require('./render')
 require('./entities')
 
 function newPage (data) {
@@ -14,22 +15,14 @@ function newPage (data) {
     }
   }
 
-  Action.get(data.action, data,
-    (err, action) => {
-      if (err) { return global.alert(err) }
+  render(data, (err, result) => {
+    if (err) { return global.alert(err) }
 
-      action.show(data, {},
-        (err, result) => {
-          if (err) { return global.alert(err) }
+    const content = document.getElementById('content')
+    content.innerHTML = result.content
 
-          const content = document.getElementById('content')
-          content.innerHTML = result.content
-
-          updateLinks()
-        }
-      )
-    }
-  )
+    updateLinks()
+  })
 
   return true
 }

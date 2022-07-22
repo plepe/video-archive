@@ -2,7 +2,7 @@ const Action = require('./Action')
 const Entity = require('./Entity')
 
 class ActionView extends Action {
-  show (params, query, callback) {
+  show (params, callback) {
     Entity.get(params.id,
       (err, entity) => {
         if (err) { return callback(err) }

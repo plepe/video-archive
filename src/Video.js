@@ -12,8 +12,8 @@ class Video extends Entity {
 
     href = url(href, 'data')
 
-    result += "<div class=\"videoContainer\"><video class='video-js' data-setup='{}' controls><source type=\"video/mp4\" src=\"" + href + "\"></video></div>\n"
-    result += "<div class=\"title\">" + this.data.title + "</div>\n"
+    result += "<div class=\"videoContainer\"><video class='video-js' data-setup='{}' controls><source type=\"video/mp4\" src=\"" + escapeHTML(href) + "\"></video></div>\n"
+    result += "<div class=\"title\">" + escapeHTML(this.data.title) + "</div>\n"
 
     return result
   }

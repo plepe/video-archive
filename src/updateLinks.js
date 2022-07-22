@@ -7,13 +7,20 @@ module.exports = function updateLinks () {
 
   Array.from(links).forEach(link => {
     link.onclick = () => {
-      let appPath = location.origin + location.pathname
-      if (link.href.substr(0, appPath.length) === appPath) {
-        let param = queryString.parse(link.href.substr(appPath.length + 1))
+      const href = link.href.substr(location.origin.length + 1)
+      let [path, params] = href.split('?')
+      path = path.split(/\//g)
+      params = queryString.parse(params)
 
-        if (state.apply(param)) {
-          return false
-        }
+      if (path.length > 1) {
+        params.id = path[1]
+      }
+      if (path.length > 0) {
+        params.action = path[0]
+      }
+
+      if (state.apply(params)) {
+        return false
       }
     }
   })

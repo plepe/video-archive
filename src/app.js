@@ -2,32 +2,36 @@ const VideoJS = require('video.js')
 const state = require('./state')
 const updateLinks = require('./updateLinks')
 const Entity = require('./Entity')
+const Action = require('./Action')
 require('./entities')
 
 function newPage (data) {
   if (!('action' in data)) {
     if ('id' in data) {
-      data.action = 'show'
+      data.action = 'view'
     } else {
       data.action = 'list'
     }
   }
 
-  if (data.action in Actions) {
-    const action = new Actions[data.action](data)
-    action.load((err) => {
+  Action.get(data.action, data,
+    (err, action) => {
       if (err) { return global.alert(err) }
 
-      const text = action.show()
+      action.show(data, {},
+        (err, result) => {
+          if (err) { return global.alert(err) }
 
-      const content = document.getElementById('content')
-      content.innerHTML = text
-    })
+          const content = document.getElementById('content')
+          content.innerHTML = result.content
 
-    return true
-  }
+          updateLinks()
+        }
+      )
+    }
+  )
 
-  console.log(data)
+  return true
 }
 
 window.onload = () => {

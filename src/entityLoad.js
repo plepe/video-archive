@@ -26,6 +26,18 @@ module.exports = {
         loadEntityProperties(result[0], callback)
       }
     )
+  },
+
+  list (options, callback) {
+    database.query('select * from entity where class=\'Video\'', [],
+      (err, result) => {
+        if (err) { return callback(err) }
+
+        result = result.map(data => data.id)
+
+        callback(null, result)
+      }
+    )
   }
 }
 

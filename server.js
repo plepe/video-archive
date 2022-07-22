@@ -6,6 +6,7 @@ const port = 3000
 const database = require('./src/database')
 const Entity = require('./src/Entity')
 const Action = require('./src/Action')
+const entityLoad = require('./src/entityLoad')
 require('./src/entities')
 
 const config = JSON.parse(fs.readFileSync('conf.json'))
@@ -15,9 +16,42 @@ app.set('views', __dirname + '/views')
 app.set('view engine', 'twig')
 
 app.get('/', (req, res) => {
+  if (req.headers['content-type'] && req.headers['content-type'] === 'application/json') {
+    res.setHeader('Content-Type', 'application/json');
+    Entity.list(req.query, (err, result) => {
+      if (err) {
+        res.status(500).send('Server Error')
+        return console.error(err)
+      }
+
+      res.send(JSON.stringify(result, null, 2))
+    })
+
+    return
+  }
+
   res.render('index', {
     message: 'Hello World!'
   })
+})
+
+app.get('/ids', (req, res) => {
+  if (req.headers['content-type'] && req.headers['content-type'] === 'application/json') {
+    res.setHeader('Content-Type', 'application/json');
+    entityLoad.list(req.query, (err, result) => {
+      if (err) {
+        res.status(500).send('Server Error')
+        return console.error(err)
+      }
+
+      res.send(JSON.stringify(result, null, 2))
+    })
+
+    return
+  }
+
+  res.status(500).send('Server Error')
+  return console.error(err)
 })
 
 app.get('/view/:id', (req, res) => {

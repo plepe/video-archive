@@ -1,4 +1,7 @@
+const async = require('async')
+
 const entityLoad = require('./entityLoad')
+
 const cache = {}
 
 class Entity {
@@ -29,6 +32,17 @@ Entity.get = function (id, callback) {
     cache[id] = entity
 
     callback(null, entity)
+  })
+}
+
+Entity.list = function (options, callback) {
+  entityLoad.list(options, (err, ids) => {
+    if (err) { return callback(err) }
+
+    async.map(ids,
+      (id, done) => Entity.get(id, done),
+      (err, result) => callback(err, result)
+    )
   })
 }
 

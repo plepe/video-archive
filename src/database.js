@@ -20,7 +20,7 @@ class DB {
 
     stmt.execute(...params)
       .then(results => callback(null, results))
-      .catch(reason => callback(reason))
+      .catch(reason => global.setTimeout(() => callback(reason), 0))
   }
 }
 

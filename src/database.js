@@ -18,7 +18,7 @@ class DB {
 
     const stmt = this.prepared[qry]
 
-    stmt.execute(...params)
+    stmt.query(...params)
       .then(results => callback(null, results))
       .catch(reason => global.setTimeout(() => callback(reason), 0))
   }

@@ -29,7 +29,7 @@ module.exports = {
   },
 
   list (options, callback) {
-    database.query('select * from entity where class=\'Video\'', [],
+    database.query('select * from entity', [],
       (err, result) => {
         if (err) { return callback(err) }
 

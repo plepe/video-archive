@@ -1,5 +1,4 @@
 const Action = require('./Action')
-const Entity = require('./Entity')
 
 class ActionEdit extends Action {
   show_html (res, callback) {
@@ -8,23 +7,17 @@ class ActionEdit extends Action {
       return callback(null, { content })
     }
 
-    Entity.get(this.params.id,
-      (err, entity) => {
-        if (err) { return callback(err) }
+    if (!this.entity) {
+      return callback(null, null)
+    }
 
-        if (!entity) {
-          return callback(null, null)
-        }
+    let content = '<form enctype="multipart/form-data" method="post">';
+    content += 'Title: <input type="text" name="title"><br>'
+    content += 'File: <input type="file" name="upload"><br>'
+    content += '<input type="submit">'
+    content += '</form>'
 
-        let content = '<form enctype="multipart/form-data" method="post">';
-        content += 'Title: <input type="text" name="title"><br>'
-        content += 'File: <input type="file" name="upload"><br>'
-        content += '<input type="submit">'
-        content += '</form>'
-
-        callback(null, { content })
-      }
-    )
+    callback(null, { content })
   }
 
   request_post (data, callback) {

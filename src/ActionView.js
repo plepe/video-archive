@@ -3,19 +3,13 @@ const Entity = require('./Entity')
 
 class ActionView extends Action {
   show_html (res, callback) {
-    Entity.get(this.params.id,
-      (err, entity) => {
-        if (err) { return callback(err) }
+    if (!this.entity) {
+      return callback(null, null)
+    }
 
-        if (!entity) {
-          return callback(null, null)
-        }
-
-        callback(null, {
-          content: this.entity.showFull(this.params)
-        })
-      }
-    )
+    callback(null, {
+      content: this.entity.showFull(this.params)
+    })
   }
 }
 

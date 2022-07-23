@@ -5,7 +5,6 @@ class Action {
     this.params = params
     if (params.id) {
       this.id = params.id
-      //this.entity = Entity.get(this.id)
     }
   }
 

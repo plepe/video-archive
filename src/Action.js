@@ -25,7 +25,8 @@ class Action {
     callback(null)
   }
 
-  show () {
+  show_html (res, callback) {
+    callback(null)
   }
 }
 

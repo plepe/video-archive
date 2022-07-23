@@ -5,7 +5,7 @@ module.exports = function render (params, callback) {
     (err, action) => {
       if (err) { return callback(err) }
 
-      action.show(params, callback)
+      action.show_html(params, callback)
     }
   )
 }

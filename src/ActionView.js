@@ -2,8 +2,8 @@ const Action = require('./Action')
 const Entity = require('./Entity')
 
 class ActionView extends Action {
-  show (params, callback) {
-    Entity.get(params.id,
+  show_html (res, callback) {
+    Entity.get(this.params.id,
       (err, entity) => {
         if (err) { return callback(err) }
 
@@ -12,7 +12,7 @@ class ActionView extends Action {
         }
 
         callback(null, {
-          content: this.entity.showFull(params)
+          content: this.entity.showFull(this.params)
         })
       }
     )

@@ -24,7 +24,7 @@ module.exports = function handleAction (method, req, res) {
             return console.error(err)
           }
 
-          action.show(req.query,
+          action.show_html(res,
             (err, result) => {
               if (err) {
                 res.status(500).send('Server Error')

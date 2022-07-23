@@ -2,13 +2,13 @@ const Action = require('./Action')
 const Entity = require('./Entity')
 
 class ActionEdit extends Action {
-  show (params, callback) {
+  show_html (res, callback) {
     if (this.done) {
       const content = '<pre>' + JSON.stringify(this.done.body) + '\n' + JSON.stringify(this.done.files) + '</pre>'
       return callback(null, { content })
     }
 
-    Entity.get(params.id,
+    Entity.get(this.params.id,
       (err, entity) => {
         if (err) { return callback(err) }
 

@@ -8,7 +8,6 @@ const database = require('./src/database')
 const Entity = require('./src/Entity')
 const Action = require('./src/Action')
 const entityLoad = require('./src/entityLoad')
-const render = require('./src/render')
 const handleAction = require('./src/handleAction')
 require('./src/entities')
 
@@ -33,23 +32,7 @@ app.get('/', (req, res) => {
     return
   }
 
-  const params = req.query
-  if (!params.action) {
-    if (params.id) {
-      params.action = 'view'
-    } else {
-      params.action = 'list'
-    }
-  }
-
-  render(params, (err, result) => {
-    if (err) {
-      res.status(500).send('Server Error')
-      return console.error(err)
-    }
-
-    res.render('index', result)
-  })
+  handleAction('get', req, res)
 })
 
 const upload = multer({ dest: config.data_dir + '/tmp' })
@@ -92,23 +75,9 @@ app.get('/view/:id', (req, res) => {
     return
   }
 
-  const params = req.query
-  params.id = req.params.id
-  params.action = 'view'
-
-  render(params, (err, result) => {
-    if (err) {
-      res.status(500).send('Server Error')
-      return console.error(err)
-    }
-
-    if (!result) {
-      res.status(404).send('Entity not found')
-      return
-    }
-
-    res.render('index', result)
-  })
+  req.query.id = req.params.id
+  req.query.action = 'view'
+  handleAction('get', req, res)
 })
 
 app.get('/data/:id', (req, res) => {

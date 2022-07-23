@@ -31,6 +31,11 @@ module.exports = function handleAction (method, req, res) {
                 return console.error(err)
               }
 
+              if (!result) {
+                res.status(404).send('Entity not found')
+                return
+              }
+
               res.render('index', result)
             }
           )

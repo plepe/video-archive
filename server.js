@@ -31,8 +31,14 @@ app.get('/', (req, res) => {
     return
   }
 
-  const params = req.params
-  params.action = 'list'
+  const params = req.query
+  if (!params.action) {
+    if (params.id) {
+      params.action = 'view'
+    } else {
+      params.action = 'list'
+    }
+  }
 
   render(params, (err, result) => {
     if (err) {

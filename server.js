@@ -9,6 +9,7 @@ const Entity = require('./src/Entity')
 const Action = require('./src/Action')
 const entityLoad = require('./src/entityLoad')
 const render = require('./src/render')
+const handleAction = require('./src/handleAction')
 require('./src/entities')
 
 const config = JSON.parse(fs.readFileSync('conf.json'))
@@ -52,26 +53,8 @@ app.get('/', (req, res) => {
 })
 
 const upload = multer({ dest: config.data_dir + '/tmp' })
-app.post('/', upload.fields([{ name: 'upload' }]), (req, res) => {
-  action = Action.get(req.query.action, req.query,
-    (err, action) => {
-      if (err) {
-        res.status(500).send('Server Error')
-        return console.error(err)
-      }
-
-      action.post(req.query, req,
-        (err, result) => {
-          if (err) {
-            res.status(500).send('Server Error')
-            return console.error(err)
-          }
-
-          res.render('index', result)
-        }
-      )
-    }
-  )
+app.post('/',upload.fields([{ name: 'upload' }]), (req, res) => {
+  handleAction('post', req, res)
 })
 
 app.get('/ids', (req, res) => {

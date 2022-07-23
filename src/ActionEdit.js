@@ -3,6 +3,11 @@ const Entity = require('./Entity')
 
 class ActionEdit extends Action {
   show (params, callback) {
+    if (this.done) {
+      const content = '<pre>' + JSON.stringify(this.done.body) + '\n' + JSON.stringify(this.done.files) + '</pre>'
+      return callback(null, { content })
+    }
+
     Entity.get(params.id,
       (err, entity) => {
         if (err) { return callback(err) }
@@ -22,10 +27,10 @@ class ActionEdit extends Action {
     )
   }
 
-  post (params, data, callback) {
-    const content = '<pre>' + JSON.stringify(data.body) + '\n' + JSON.stringify(data.files) + '</pre>'
+  request_post (data, callback) {
+    this.done = data
 
-    callback(null, { content })
+    callback(null)
   }
 }
 

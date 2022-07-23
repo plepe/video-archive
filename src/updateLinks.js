@@ -12,10 +12,10 @@ module.exports = function updateLinks () {
       path = path.split(/\//g)
       params = queryString.parse(params)
 
-      if (path.length > 1) {
+      if (path.length > 1 && path[1] !== '') {
         params.id = path[1]
       }
-      if (path.length > 0) {
+      if (path.length > 0 && path[0] !== '') {
         params.action = path[0]
       }
 

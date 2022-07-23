@@ -1,5 +1,6 @@
 const fs = require('fs')
 const express = require('express')
+const multer = require('multer')
 const app = express()
 const port = 3000
 
@@ -48,6 +49,29 @@ app.get('/', (req, res) => {
 
     res.render('index', result)
   })
+})
+
+const upload = multer({ dest: config.data_dir + '/tmp' })
+app.post('/', upload.fields([{ name: 'upload' }]), (req, res) => {
+  action = Action.get(req.query.action, req.query,
+    (err, action) => {
+      if (err) {
+        res.status(500).send('Server Error')
+        return console.error(err)
+      }
+
+      action.post(req.query, req,
+        (err, result) => {
+          if (err) {
+            res.status(500).send('Server Error')
+            return console.error(err)
+          }
+
+          res.render('index', result)
+        }
+      )
+    }
+  )
 })
 
 app.get('/ids', (req, res) => {

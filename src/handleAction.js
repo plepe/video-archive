@@ -24,7 +24,13 @@ module.exports = function handleAction (method, req, res) {
             return console.error(err)
           }
 
-          action.show_html(res,
+          let responseType = 'html'
+          if (req.headers['content-type'] && req.headers['content-type'] === 'application/json') {
+            responseType = 'json'
+            res.setHeader('Content-Type', 'application/json');
+          }
+
+          action['show_' + responseType](res,
             (err, result) => {
               if (err) {
                 res.status(500).send('Server Error')
@@ -36,7 +42,13 @@ module.exports = function handleAction (method, req, res) {
                 return
               }
 
-              res.render('index', result)
+              if (responseType === 'html') {
+                res.render('index', result)
+              } else if (responseType === 'json') {
+                res.send(JSON.stringify(result, null, 2))
+              } else {
+                res.send(result)
+              }
             }
           )
         }

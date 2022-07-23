@@ -18,20 +18,6 @@ app.set('views', __dirname + '/views')
 app.set('view engine', 'twig')
 
 app.get('/', (req, res) => {
-  if (req.headers['content-type'] && req.headers['content-type'] === 'application/json') {
-    res.setHeader('Content-Type', 'application/json');
-    Entity.list(req.query, (err, result) => {
-      if (err) {
-        res.status(500).send('Server Error')
-        return console.error(err)
-      }
-
-      res.send(JSON.stringify(result, null, 2))
-    })
-
-    return
-  }
-
   handleAction('get', req, res)
 })
 
@@ -60,21 +46,6 @@ app.get('/ids', (req, res) => {
 })
 
 app.get('/view/:id', (req, res) => {
-  if (req.headers['content-type'] && req.headers['content-type'] === 'application/json') {
-    res.setHeader('Content-Type', 'application/json');
-
-    Entity.get(req.params.id, (err, result) => {
-      if (err) {
-        res.status(500).send('Server Error')
-        return console.error(err)
-      }
-
-      res.send(JSON.stringify(result.data, null, 2))
-    })
-
-    return
-  }
-
   req.query.id = req.params.id
   req.query.action = 'view'
   handleAction('get', req, res)

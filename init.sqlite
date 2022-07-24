@@ -73,3 +73,9 @@ create table if not exists process_queue (
   primary key(proc_id),
   foreign key(id) references entity(id) on update cascade on delete cascade
 );
+
+create table if not exists auth_tokens (
+  user          varchar(255)    not null,
+  token         char(60)        not null,
+  last_access   datetime        null default CURRENT_TIMESTAMP
+);

@@ -154,8 +154,16 @@ app.post('/login', (req, res) => {
     }
 
     if (user) {
-      authTokens.authorize(res, user)
-      res.send('Authenticated')
+      authTokens.authorize(res, user,
+        (err) => {
+          if (err) {
+            res.status(500).send('Server Error')
+            return console.error(err)
+          }
+
+          res.send('Authenticated')
+        }
+      )
     } else {
       res.render('login', {})
     }

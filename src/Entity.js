@@ -9,6 +9,26 @@ class Entity {
     this.id = id
     this.data = data
   }
+
+  save (data, callback) {
+    entityLoad.save(this.id, this.data.class, data,
+      (err) => {
+        if (err) { return callback(err) }
+
+        this.reload(callback)
+      }
+    )
+  }
+
+  reload (callback) {
+    entityLoad.get(this.id, (err, data) => {
+      if (err) { return callback(err) }
+
+      this.data = data
+
+      callback(null)
+    })
+  }
 }
 
 Entity.classes = {}

@@ -7,6 +7,10 @@ const async = require('async')
 const database = require('./database')
 
 const entityDataDef = {
+  Entity: {
+    table: 'entity',
+    properties: [ 'author' ]
+  },
   Video: {
     table: 'video',
     properties: [ 'title', 'filesize', 'duration', 'originalFile' ]
@@ -24,6 +28,15 @@ module.exports = {
         }
 
         loadEntityProperties(result[0], callback)
+      }
+    )
+  },
+
+  save (id, _class, data, callback) {
+    saveProperties(id, entityDataDef.Entity, data,
+      (err) => {
+        if (err) { return callback(err) }
+        saveProperties(id, entityDataDef[_class], data, callback)
       }
     )
   },
@@ -67,4 +80,21 @@ function loadEntityProperties (data, callback) {
   } else {
     callback(null, data)
   }
+}
+
+function saveProperties (id, def, data, callback) {
+  const properties = def.properties.filter(p => p in data)
+  if (!properties.length) {
+    return callback(null)
+  }
+
+  const param = properties.map(p => data[p])
+  param.push(id)
+  const qry = 'update ' + def.table + ' set ' + properties.map(p => p + '=?').join(', ') + ' where id=?'
+
+  database.query(qry, param,
+    (err, result) => {
+      callback(err, result)
+    }
+  )
 }

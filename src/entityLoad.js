@@ -5,11 +5,12 @@
 const async = require('async')
 
 const database = require('./database')
+const now = require('./now')
 
 const entityDataDef = {
   Entity: {
     table: 'entity',
-    properties: [ 'author' ]
+    properties: [ 'author', 'tsUpdate' ]
   },
   Video: {
     table: 'video',
@@ -33,6 +34,7 @@ module.exports = {
   },
 
   save (id, _class, data, callback) {
+    data.tsUpdate = now()
     saveProperties(id, entityDataDef.Entity, data,
       (err) => {
         if (err) { return callback(err) }

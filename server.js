@@ -2,6 +2,7 @@ const path = require('path')
 const fs = require('fs')
 const express = require('express')
 const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
 const multer = require('multer')
 const app = express()
 const port = 3000
@@ -11,6 +12,7 @@ const Entity = require('./src/Entity')
 const entityLoad = require('./src/entityLoad')
 const handleAction = require('./src/handleAction')
 const auth = require('./src/auth')
+const authTokens = require('./src/authTokens')
 require('./src/entities')
 
 const config = JSON.parse(fs.readFileSync('conf.json'))
@@ -20,6 +22,10 @@ database.init(config)
 app.use(express.json())
 // To support URL-encoded bodies
 app.use(bodyParser.urlencoded({ extended: true }))
+// Cookies
+app.use(cookieParser())
+
+app.use(authTokens.check)
 
 app.set('views', path.join(__dirname, '/views'))
 app.set('view engine', 'twig')
@@ -141,13 +147,14 @@ app.get('/login', (req, res) => {
 })
 
 app.post('/login', (req, res) => {
-  auth(req, (err, result) => {
+  auth(req, (err, user) => {
     if (err) {
       res.status(500).send('Server Error')
       return console.error(err)
     }
 
-    if (result) {
+    if (user) {
+      authTokens.authorize(res, user)
       res.send('Authenticated')
     } else {
       res.render('login', {})

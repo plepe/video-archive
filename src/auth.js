@@ -12,5 +12,5 @@ module.exports = function (req, callback) {
 
 function check (req, file, callback) {
   htpasswd.authenticate(req.body.username, req.body.password, file)
-    .then(auth => callback(null, auth))
+    .then(auth => callback(null, auth ? req.body.username : false))
 }

@@ -10,6 +10,7 @@ module.exports = {
       })
       .then(res => res.json())
       .then(data => callback(null, data))
+      .catch(reason => global.setTimeout(() => callback(reason), 0))
   },
 
   list (options, callback) {
@@ -21,5 +22,6 @@ module.exports = {
       })
       .then(res => res.json())
       .then(data => callback(null, data))
+      .catch(reason => global.setTimeout(() => callback(reason), 0))
   }
 }

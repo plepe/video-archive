@@ -12,6 +12,11 @@ module.exports = function handleAction (method, req, res) {
 
   action = Action.get(params.action, params,
     (err, action) => {
+      if (err) {
+        res.status(500).send('Server Error')
+        return console.error(err)
+      }
+
       if (!action['request_' + method]) {
         res.status(500).send('Server Error')
         return console.error('Method ' + method + ' not allowed for action ' + req.query.action)

@@ -20,7 +20,7 @@ Entity.get = function (id, callback) {
 
   entityLoad.get(id, (err, data) => {
     if (!data) {
-      return callback(null, null)
+      return callback(err, null)
     }
 
     if (!(data.class in Entity.classes)) {

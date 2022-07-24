@@ -33,7 +33,12 @@ function save (id, _class, data, callback) {
   saveProperties(id, entityDataDef.Entity, data,
     (err) => {
       if (err) { return callback(err) }
-      saveProperties(id, entityDataDef[_class], data, callback)
+      saveProperties(id, entityDataDef[_class], data,
+        (err) => {
+          if (err) { return callback(err) }
+          get(id, callback)
+        }
+      )
     }
   )
 }

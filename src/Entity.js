@@ -12,10 +12,12 @@ class Entity {
 
   save (data, callback) {
     entityLoad.save(this.id, this.data.class, data,
-      (err) => {
+      (err, data) => {
         if (err) { return callback(err) }
 
-        this.reload(callback)
+        this.data = data
+
+        callback(null)
       }
     )
   }

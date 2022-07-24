@@ -10,6 +10,7 @@ const database = require('./src/database')
 const Entity = require('./src/Entity')
 const entityLoad = require('./src/entityLoad')
 const handleAction = require('./src/handleAction')
+const auth = require('./src/auth')
 require('./src/entities')
 
 const config = JSON.parse(fs.readFileSync('conf.json'))
@@ -133,6 +134,25 @@ app.get('/data/:id', (req, res) => {
       )
     }
   )
+})
+
+app.get('/login', (req, res) => {
+  res.render('login', {})
+})
+
+app.post('/login', (req, res) => {
+  auth(req, (err, result) => {
+    if (err) {
+      res.status(500).send('Server Error')
+      return console.error(err)
+    }
+
+    if (result) {
+      res.send('Authenticated')
+    } else {
+      res.render('login', {})
+    }
+  })
 })
 
 app.use('/static', express.static('static'))

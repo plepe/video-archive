@@ -1,8 +1,7 @@
+/* global VideoJS */
 const VideoJS = require('video.js')
 const state = require('./state')
 const updateLinks = require('./updateLinks')
-const Entity = require('./Entity')
-const Action = require('./Action')
 const render = require('./render')
 require('./entities')
 

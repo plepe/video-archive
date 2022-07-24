@@ -1,26 +1,20 @@
-//        async.mapSeries(result,
-//          (data, done) => loadEntityProperties(data, done),
-//          (err, result) => callback(err, result)
-//        )
-const async = require('async')
-
 const database = require('./database')
 const now = require('./now')
 
 const entityDataDef = {
   Entity: {
     table: 'entity',
-    properties: [ 'author', 'tsUpdate' ]
+    properties: ['author', 'tsUpdate']
   },
   Video: {
     table: 'video',
-    properties: [ 'title', 'filesize', 'duration', 'originalFile' ]
+    properties: ['title', 'filesize', 'duration', 'originalFile']
   }
 }
 
 module.exports = {
   get (id, callback) {
-    database.query('select * from entity where id=?', [ id ],
+    database.query('select * from entity where id=?', [id],
       (err, result) => {
         if (err) { return callback(err) }
 
@@ -64,7 +58,7 @@ function loadEntityProperties (data, callback) {
   const def = entityDataDef[data.class]
 
   if (def.table) {
-    database.query('select * from ' + def.table + ' where id=?', [ data.id ],
+    database.query('select * from ' + def.table + ' where id=?', [data.id],
       (err, result) => {
         if (err) { return callback(err) }
 

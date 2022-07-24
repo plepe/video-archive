@@ -10,11 +10,11 @@ class State extends EventEmitter {
     let newState = {}
     this.data = {}
 
-    if (location.search && location.search.length > 1) {
-      newState = this.parse(location.search.substr(1))
+    if (global.location.search && global.location.search.length > 1) {
+      newState = this.parse(global.location.search.substr(1))
     }
 
-    for (let k in newState) {
+    for (const k in newState) {
       this.data[k] = newState[k]
     }
 
@@ -24,17 +24,17 @@ class State extends EventEmitter {
   }
 
   apply (param, noPushState = false) {
-    for (let k in this.data) {
+    for (const k in this.data) {
       delete this.data[k]
     }
-    for (let k in param) {
+    for (const k in param) {
       this.data[k] = param[k]
     }
 
     this.indicate_loading()
 
     if (!noPushState) {
-      history.pushState(this.data, '', '?' + queryString.stringify(this.data))
+      global.history.pushState(this.data, '', '?' + queryString.stringify(this.data))
     }
 
     this.emit('apply', this.data)
@@ -53,22 +53,16 @@ class State extends EventEmitter {
   }
 
   change (param, noPushState = false) {
-    let newState = JSON.parse(JSON.stringify(this.data))
+    const newState = JSON.parse(JSON.stringify(this.data))
 
-    for (let k in param) {
+    for (const k in param) {
       newState[k] = param[k]
     }
 
     this.apply(newState, noPushState)
   }
-
-  apply_from_form (dom) {
-    let data = data_from_form(dom)
-
-    return this.apply(data)
-  }
 }
 
-let state = new State()
+const state = new State()
 
 module.exports = state

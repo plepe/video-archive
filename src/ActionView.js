@@ -1,5 +1,4 @@
 const Action = require('./Action')
-const Entity = require('./Entity')
 
 class ActionView extends Action {
   show_html (res, callback) {

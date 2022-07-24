@@ -10,7 +10,7 @@ module.exports = function handleAction (method, req, res) {
     }
   }
 
-  action = Action.get(params.action, params,
+  Action.get(params.action, params,
     (err, action) => {
       if (err) {
         res.status(500).send('Server Error')
@@ -32,7 +32,7 @@ module.exports = function handleAction (method, req, res) {
           let responseType = 'html'
           if (req.headers['content-type'] && req.headers['content-type'] === 'application/json') {
             responseType = 'json'
-            res.setHeader('Content-Type', 'application/json');
+            res.setHeader('Content-Type', 'application/json')
           }
 
           action['show_' + responseType](res,

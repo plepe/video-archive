@@ -3,11 +3,11 @@ const queryString = require('qs')
 const state = require('./state')
 
 module.exports = function updateLinks () {
-  let links = document.getElementsByTagName('a')
+  const links = document.getElementsByTagName('a')
 
   Array.from(links).forEach(link => {
     link.onclick = () => {
-      const href = link.href.substr(location.origin.length + 1)
+      const href = link.href.substr(global.location.origin.length + 1)
       let [path, params] = href.split('?')
       path = path.split(/\//g)
       params = queryString.parse(params)

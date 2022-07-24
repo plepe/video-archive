@@ -11,7 +11,7 @@ class ActionEdit extends Action {
       return callback(null, null)
     }
 
-    let content = '<form enctype="multipart/form-data" method="post">';
+    let content = '<form enctype="multipart/form-data" method="post">'
     content += 'Title: <input type="text" name="title"><br>'
     content += 'File: <input type="file" name="upload"><br>'
     content += '<input type="submit">'

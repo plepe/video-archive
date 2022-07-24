@@ -1,3 +1,4 @@
+const path = require('path')
 const fs = require('fs')
 const express = require('express')
 const multer = require('multer')
@@ -6,7 +7,6 @@ const port = 3000
 
 const database = require('./src/database')
 const Entity = require('./src/Entity')
-const Action = require('./src/Action')
 const entityLoad = require('./src/entityLoad')
 const handleAction = require('./src/handleAction')
 require('./src/entities')
@@ -17,7 +17,7 @@ database.init(config)
 // parse application/json
 app.use(express.json())
 
-app.set('views', __dirname + '/views')
+app.set('views', path.join(__dirname, '/views'))
 app.set('view engine', 'twig')
 
 app.get('/', (req, res) => {
@@ -25,13 +25,13 @@ app.get('/', (req, res) => {
 })
 
 const upload = multer({ dest: config.data_dir + '/tmp' })
-app.post('/',upload.fields([{ name: 'upload' }]), (req, res) => {
+app.post('/', upload.fields([{ name: 'upload' }]), (req, res) => {
   handleAction('post', req, res)
 })
 
 app.get('/ids', (req, res) => {
   if (req.headers['content-type'] && req.headers['content-type'] === 'application/json') {
-    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Content-Type', 'application/json')
     entityLoad.list(req.query, (err, result) => {
       if (err) {
         res.status(500).send('Server Error')
@@ -45,7 +45,6 @@ app.get('/ids', (req, res) => {
   }
 
   res.status(500).send('Server Error')
-  return console.error(err)
 })
 
 app.get('/view/:id', (req, res) => {
@@ -55,7 +54,7 @@ app.get('/view/:id', (req, res) => {
 })
 
 app.get('/api/:id', (req, res) => {
-  res.setHeader('Content-Type', 'application/json');
+  res.setHeader('Content-Type', 'application/json')
   Entity.get(req.params.id, (err, entity) => {
     if (err) {
       res.status(500).send('Server Error')
@@ -67,7 +66,7 @@ app.get('/api/:id', (req, res) => {
 })
 
 app.post('/api/:id', (req, res) => {
-  res.setHeader('Content-Type', 'application/json');
+  res.setHeader('Content-Type', 'application/json')
   Entity.get(req.params.id, (err, entity) => {
     if (err) {
       res.status(500).send('Server Error')
@@ -99,8 +98,13 @@ app.get('/data/:id', (req, res) => {
         return
       }
 
-      const file = entity.getFile(req.query,
+      entity.getFile(req.query,
         (err, result) => {
+          if (err) {
+            res.status(500).send('Server Error')
+            return console.error(err)
+          }
+
           if (!result) {
             res.status(404).send('File not found')
             return
@@ -110,6 +114,11 @@ app.get('/data/:id', (req, res) => {
           const file = config.data_dir + '/' + result.path + '/' + result.filename
           fs.stat(file,
             (err, stat) => {
+              if (err) {
+                res.status(500).send('Server Error')
+                return console.error(err)
+              }
+
               res.setHeader('Content-Length', stat.size)
               res.setHeader('Last-Modified', stat.mtime)
 

@@ -8,6 +8,7 @@
   },
   "scripts": {
     "build": "browserify src/app.js -o dist/app.js",
+    "lint": "standard --fix src/*.js server.js",
     "watch": "watchify --debug src/app.js -o dist/app.js -v",
     "prepare": "mkdir -p dist && npm run build",
     "start": "node server.js",
@@ -28,6 +29,7 @@
   "homepage": "https://github.com/plepe/video-archive#readme",
   "devDependencies": {
     "browserify": "^17.0.0",
+    "standard": "^17.0.0",
     "watchify": "^4.0.0"
   },
   "dependencies": {

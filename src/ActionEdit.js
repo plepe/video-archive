@@ -20,10 +20,10 @@ class ActionEdit extends Action {
     callback(null, { content })
   }
 
-  request_post (data, callback) {
-    this.done = data
+  request_post (request, callback) {
+    this.done = request
 
-    callback(null)
+    this.entity.save(request.body, callback)
   }
 }
 

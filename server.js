@@ -14,6 +14,9 @@ require('./src/entities')
 const config = JSON.parse(fs.readFileSync('conf.json'))
 database.init(config)
 
+// parse application/json
+app.use(express.json())
+
 app.set('views', __dirname + '/views')
 app.set('view engine', 'twig')
 
@@ -49,6 +52,38 @@ app.get('/view/:id', (req, res) => {
   req.query.id = req.params.id
   req.query.action = 'view'
   handleAction('get', req, res)
+})
+
+app.get('/api/:id', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  Entity.get(req.params.id, (err, entity) => {
+    if (err) {
+      res.status(500).send('Server Error')
+      return console.error(err)
+    }
+
+    res.send(JSON.stringify(entity.data, null, 2))
+  })
+})
+
+app.post('/api/:id', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  Entity.get(req.params.id, (err, entity) => {
+    if (err) {
+      res.status(500).send('Server Error')
+      return console.error(err)
+    }
+
+    console.log(req.body)
+    entity.save(req.body, (err) => {
+      if (err) {
+        res.status(500).send('Server Error')
+        return console.error(err)
+      }
+
+      res.send(JSON.stringify(entity.data, null, 2))
+    })
+  })
 })
 
 app.get('/data/:id', (req, res) => {

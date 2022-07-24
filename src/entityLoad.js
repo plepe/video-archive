@@ -12,42 +12,42 @@ const entityDataDef = {
   }
 }
 
-module.exports = {
-  get (id, callback) {
-    database.query('select * from entity where id=?', [id],
-      (err, result) => {
-        if (err) { return callback(err) }
+module.exports = { get, list, save }
 
-        if (!result.length) {
-          return callback(null, null)
-        }
+function get (id, callback) {
+  database.query('select * from entity where id=?', [id],
+    (err, result) => {
+      if (err) { return callback(err) }
 
-        loadEntityProperties(result[0], callback)
+      if (!result.length) {
+        return callback(null, null)
       }
-    )
-  },
 
-  save (id, _class, data, callback) {
-    data.tsUpdate = now()
-    saveProperties(id, entityDataDef.Entity, data,
-      (err) => {
-        if (err) { return callback(err) }
-        saveProperties(id, entityDataDef[_class], data, callback)
-      }
-    )
-  },
+      loadEntityProperties(result[0], callback)
+    }
+  )
+}
 
-  list (options, callback) {
-    database.query('select * from entity', [],
-      (err, result) => {
-        if (err) { return callback(err) }
+function save (id, _class, data, callback) {
+  data.tsUpdate = now()
+  saveProperties(id, entityDataDef.Entity, data,
+    (err) => {
+      if (err) { return callback(err) }
+      saveProperties(id, entityDataDef[_class], data, callback)
+    }
+  )
+}
 
-        result = result.map(data => data.id)
+function list (options, callback) {
+  database.query('select * from entity', [],
+    (err, result) => {
+      if (err) { return callback(err) }
 
-        callback(null, result)
-      }
-    )
-  }
+      result = result.map(data => data.id)
+
+      callback(null, result)
+    }
+  )
 }
 
 function loadEntityProperties (data, callback) {

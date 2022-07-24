@@ -1,6 +1,7 @@
 const path = require('path')
 const fs = require('fs')
 const express = require('express')
+const bodyParser = require('body-parser')
 const multer = require('multer')
 const app = express()
 const port = 3000
@@ -16,6 +17,8 @@ database.init(config)
 
 // parse application/json
 app.use(express.json())
+// To support URL-encoded bodies
+app.use(bodyParser.urlencoded({ extended: true }))
 
 app.set('views', path.join(__dirname, '/views'))
 app.set('view engine', 'twig')
